@@ -4,7 +4,7 @@
   <img src="public/LOGO_VittaCash.png" alt="VittaCash Logo" width="400"/>
 </p>
 
-Sistema de Controle de Gastos Pessoais desenvolvido com Next.js 16, NextAuth.js, Prisma e PostgreSQL.
+Sistema de Controle de Gastos Pessoais desenvolvido com Next.js 16, React, NextAuth.js, Prisma e PostgreSQL.
 
 ---
 
