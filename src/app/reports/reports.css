@@ -1,0 +1,131 @@
+.reports-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.reports-filtros {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.reports-filtros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.reports-filtros-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.reports-filtros-input,
+.reports-filtros-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.reports-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 0.875rem;
+  background-color: #3b82f6;
+  color: white;
+}
+
+.reports-btn:hover {
+  background-color: #2563eb;
+}
+
+.reports-resultado {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.reports-total {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.reports-total-label {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.reports-total-valor {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.reports-total-periodo {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.reports-secao {
+  margin-bottom: 2rem;
+}
+
+.reports-secao h3 {
+  font-size: 1.5rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.reports-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  transition: background 0.2s;
+}
+
+.reports-item:hover {
+  background: #f3f4f6;
+}
+
+.reports-item-nome {
+  font-weight: 500;
+  color: #374151;
+}
+
+.reports-item-valor {
+  font-weight: 700;
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .reports-filtros-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-total-valor {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,256 @@
+/* Profile Button Container */
+.profile-button-container {
+  position: relative;
+}
+
+/* Profile Icon Button */
+.profile-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #e5e7eb;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.profile-icon-btn:hover {
+  border-color: #22c55e;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.profile-icon-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #6b7280;
+  transition: color 0.3s ease;
+}
+
+.profile-icon-btn:hover svg {
+  color: #22c55e;
+}
+
+/* Profile Avatar Image */
+.profile-icon-btn.authenticated {
+  border-color: #22c55e;
+  padding: 0;
+  overflow: hidden;
+}
+
+.profile-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Dropdown */
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  min-width: 280px;
+  overflow: hidden;
+  animation: dropdownSlide 0.3s ease-out;
+  z-index: 1000;
+  border: 1px solid #f0f0f0;
+}
+
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dropdown Header (quando logado) */
+.profile-dropdown-header {
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-dropdown-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #22c55e;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+
+.profile-dropdown-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-dropdown-avatar svg {
+  width: 28px;
+  height: 28px;
+  color: #22c55e;
+}
+
+.profile-dropdown-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-dropdown-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-dropdown-email {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dropdown Divider */
+.profile-dropdown-divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 0.5rem 0;
+}
+
+/* Dropdown Items */
+.profile-dropdown-item {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
+  color: #374151;
+}
+
+.profile-dropdown-item svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.profile-dropdown-item:hover {
+  background: #f9fafb;
+}
+
+/* Login Item */
+.profile-dropdown-item.login-item {
+  color: #22c55e;
+}
+
+.profile-dropdown-item.login-item svg {
+  color: #22c55e;
+}
+
+.profile-dropdown-item.login-item:hover {
+  background: rgba(34, 197, 94, 0.05);
+}
+
+/* Logout Item */
+.profile-dropdown-item.logout-item {
+  color: #dc2626;
+}
+
+.profile-dropdown-item.logout-item svg {
+  color: #dc2626;
+}
+
+.profile-dropdown-item.logout-item:hover {
+  background: #fef2f2;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .profile-icon-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .profile-dropdown {
+    min-width: 260px;
+    right: -10px;
+  }
+
+  .profile-dropdown-header {
+    padding: 1rem;
+  }
+
+  .profile-dropdown-avatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .profile-dropdown-name {
+    font-size: 0.9rem;
+  }
+
+  .profile-dropdown-email {
+    font-size: 0.75rem;
+  }
+
+  .profile-dropdown-item {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .profile-dropdown-item svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .profile-icon-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .profile-dropdown {
+    min-width: 240px;
+    right: -20px;
+  }
+}

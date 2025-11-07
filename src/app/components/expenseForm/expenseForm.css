@@ -1,0 +1,117 @@
+.expense-form {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.expense-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.expense-form-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.expense-form-input,
+.expense-form-select,
+.expense-form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.expense-form-input:focus,
+.expense-form-select:focus,
+.expense-form-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.expense-form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.expense-form-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.expense-form-checkbox {
+  width: auto;
+  cursor: pointer;
+}
+
+.expense-form-error {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.expense-form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.expense-form-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 1rem;
+}
+
+.expense-form-btn-submit {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.expense-form-btn-submit:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.expense-form-btn-submit:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.expense-form-btn-cancel {
+  background-color: #6b7280;
+  color: white;
+}
+
+.expense-form-btn-cancel:hover {
+  background-color: #4b5563;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .expense-form {
+    padding: 1.5rem;
+  }
+
+  .expense-form-actions {
+    flex-direction: column;
+  }
+
+  .expense-form-btn {
+    width: 100%;
+  }
+}

@@ -1,66 +1,120 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useEffect, useState } from 'react';
+import Layout from './components/layout/Layout';
+import Hero from './components/hero/Hero';
+import Header from './components/header/Header';
+import { authService } from '../services/api';
+import { obterRelatorio } from '../services/api';
+import './page.css';
 
 export default function Home() {
+  const [autenticado, setAutenticado] = useState(false);
+  const [relatorioMensal, setRelatorioMensal] = useState(null);
+  const [relatorioAnual, setRelatorioAnual] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    const verificarAuth = () => {
+      const isAuth = authService.isAuthenticated();
+      setAutenticado(isAuth);
+      
+      if (isAuth) {
+        carregarRelatorios();
+      } else {
+        setCarregando(false);
+      }
+    };
+
+    verificarAuth();
+  }, []);
+
+  const carregarRelatorios = async () => {
+    try {
+      const hoje = new Date();
+      const anoAtual = hoje.getFullYear();
+      const mesAtual = hoje.getMonth() + 1;
+
+      const [mensal, anual] = await Promise.all([
+        obterRelatorio('monthly', anoAtual, mesAtual),
+        obterRelatorio('yearly', anoAtual),
+      ]);
+
+      setRelatorioMensal(mensal);
+      setRelatorioAnual(anual);
+    } catch (erro) {
+      console.error('Erro ao carregar relatórios:', erro);
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  if (!autenticado) {
+    return (
+      <Layout semFooter>
+        <Hero />
+      </Layout>
+    );
+  }
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <Layout>
+      <div className="page-container">
+        <Header 
+          titulo="Dashboard" 
+          subtitulo="Visão geral das suas finanças"
         />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        <main className="page-main">
+          {carregando ? (
+            <p>Carregando relatórios...</p>
+          ) : (
+            <>
+              <section className="page-resumo">
+                <div className="page-card">
+                  <h2>Resumo do Mês</h2>
+                  {relatorioMensal && (
+                    <>
+                      <p className="page-total">
+                        R$ {relatorioMensal.totalGeral.toFixed(2)}
+                      </p>
+                      <p className="page-subtitulo">
+                        {relatorioMensal.mes}/{relatorioMensal.ano}
+                      </p>
+                    </>
+                  )}
+                </div>
+
+                <div className="page-card">
+                  <h2>Resumo do Ano</h2>
+                  {relatorioAnual && (
+                    <>
+                      <p className="page-total">
+                        R$ {relatorioAnual.totalGeral.toFixed(2)}
+                      </p>
+                      <p className="page-subtitulo">{relatorioAnual.ano}</p>
+                    </>
+                  )}
+                </div>
+              </section>
+
+              {relatorioMensal && relatorioMensal.categorias && (
+                <section className="page-categorias">
+                  <h3>Gastos por Categoria (Este Mês)</h3>
+                  {relatorioMensal.categorias.map((cat) => (
+                    <div key={cat.categoria} className="page-categoria-item">
+                      <span className="page-categoria-nome">{cat.categoria}</span>
+                      <span className="page-categoria-valor">
+                        R$ {cat.total.toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+                </section>
+              )}
+            </>
+          )}
+        </main>
+      </div>
+    </Layout>
   );
 }
