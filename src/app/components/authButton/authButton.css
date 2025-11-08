@@ -48,12 +48,12 @@
 }
 
 .auth-btn-login {
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #34d399 0%, #fbbf24 100%);
   color: white;
 }
 
 .auth-btn-login:hover {
-  background-color: #2563eb;
+  background: linear-gradient(135deg, #10b981 0%, #f59e0b 100%);
   transform: translateY(-1px);
 }
 

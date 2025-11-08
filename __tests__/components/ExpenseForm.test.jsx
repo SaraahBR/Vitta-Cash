@@ -27,7 +27,7 @@ describe('ExpenseForm', () => {
     fireEvent.click(botaoSalvar);
 
     await waitFor(() => {
-      expect(screen.getByText(/título é obrigatório/i)).toBeInTheDocument();
+      expect(screen.getByText(/descrição é obrigatória/i)).toBeInTheDocument();
     });
 
     expect(mockAoSalvar).not.toHaveBeenCalled();
@@ -62,10 +62,10 @@ describe('ExpenseForm', () => {
     await waitFor(() => {
       expect(mockAoSalvar).toHaveBeenCalledWith(
         expect.objectContaining({
-          title: 'Teste Despesa',
-          amount: 100.50,
-          date: '2025-11-06',
-          category: 'Alimentação',
+          descricao: 'Teste Despesa',
+          valor: 100.50,
+          data: '2025-11-06',
+          categoria: 'Alimentação',
         })
       );
     });
@@ -73,13 +73,13 @@ describe('ExpenseForm', () => {
 
   it('deve preencher campos ao receber despesaInicial (modo edição)', () => {
     const despesaInicial = {
-      title: 'Despesa Existente',
-      amount: 50.00,
-      date: '2025-11-01',
-      category: 'Saúde',
-      recurring: true,
-      recurrenceType: 'MONTHLY',
-      notes: 'Nota de teste',
+      descricao: 'Despesa Existente',
+      valor: 50.00,
+      data: '2025-11-01',
+      categoria: 'Saúde',
+      recorrente: true,
+      tipoRecorrencia: 'MONTHLY',
+      notas: 'Nota de teste',
     };
 
     render(<ExpenseForm despesaInicial={despesaInicial} aoSalvar={jest.fn()} />);

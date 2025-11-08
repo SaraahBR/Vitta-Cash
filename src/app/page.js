@@ -1,12 +1,24 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Layout from './components/layout/Layout';
 import Hero from './components/hero/Hero';
 import Header from './components/header/Header';
+import LoadingScreen from './components/loading/LoadingScreen';
 import { authService } from '../services/api';
 import { obterRelatorio } from '../services/api';
 import './page.css';
+
+const PieChartCategories = dynamic(
+  () => import('./components/charts/ReportsCharts').then(mod => mod.PieChartCategories),
+  { ssr: false }
+);
+
+const BarChartMonths = dynamic(
+  () => import('./components/charts/ReportsCharts').then(mod => mod.BarChartMonths),
+  { ssr: false }
+);
 
 export default function Home() {
   const [autenticado, setAutenticado] = useState(false);
@@ -35,6 +47,7 @@ export default function Home() {
       const anoAtual = hoje.getFullYear();
       const mesAtual = hoje.getMonth() + 1;
 
+      // Busca paralela com cache automático
       const [mensal, anual] = await Promise.all([
         obterRelatorio('monthly', anoAtual, mesAtual),
         obterRelatorio('yearly', anoAtual),
@@ -42,6 +55,13 @@ export default function Home() {
 
       setRelatorioMensal(mensal);
       setRelatorioAnual(anual);
+      
+      // Pré-carrega dados do próximo mês em background
+      setTimeout(() => {
+        const proximoMes = mesAtual === 12 ? 1 : mesAtual + 1;
+        const proximoAno = mesAtual === 12 ? anoAtual + 1 : anoAtual;
+        obterRelatorio('monthly', proximoAno, proximoMes).catch(() => {});
+      }, 1000);
     } catch (erro) {
       console.error('Erro ao carregar relatórios:', erro);
     } finally {
@@ -51,7 +71,7 @@ export default function Home() {
 
   if (!autenticado) {
     return (
-      <Layout semFooter>
+      <Layout>
         <Hero />
       </Layout>
     );
@@ -66,9 +86,9 @@ export default function Home() {
         />
 
         <main className="page-main">
-          {carregando ? (
-            <p>Carregando relatórios...</p>
-          ) : (
+          {carregando && <LoadingScreen message="Carregando dashboard..." />}
+          
+          {!carregando && (
             <>
               <section className="page-resumo">
                 <div className="page-card">
@@ -98,10 +118,27 @@ export default function Home() {
                 </div>
               </section>
 
-              {relatorioMensal && relatorioMensal.categorias && (
-                <section className="page-categorias">
+              {/* Gráfico de Gastos Mensais por Categoria */}
+              {relatorioMensal && relatorioMensal.porCategoria && relatorioMensal.porCategoria.length > 0 && (
+                <section className="page-graficos">
                   <h3>Gastos por Categoria (Este Mês)</h3>
-                  {relatorioMensal.categorias.map((cat) => (
+                  <PieChartCategories data={relatorioMensal.porCategoria} />
+                </section>
+              )}
+
+              {/* Gráfico de Gastos Anuais por Mês */}
+              {relatorioAnual && relatorioAnual.porMes && relatorioAnual.porMes.length > 0 && (
+                <section className="page-graficos">
+                  <h3>Gastos por Mês (Este Ano)</h3>
+                  <BarChartMonths data={relatorioAnual.porMes} />
+                </section>
+              )}
+
+              {/* Detalhamento das Categorias */}
+              {relatorioMensal && relatorioMensal.porCategoria && (
+                <section className="page-categorias">
+                  <h3>Detalhamento de Categorias (Este Mês)</h3>
+                  {relatorioMensal.porCategoria.map((cat) => (
                     <div key={cat.categoria} className="page-categoria-item">
                       <span className="page-categoria-nome">{cat.categoria}</span>
                       <span className="page-categoria-valor">

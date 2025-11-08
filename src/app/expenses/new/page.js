@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Layout from '../../components/layout/Layout';
 import Header from '../../components/header/Header';
+import LoadingScreen from '../../components/loading/LoadingScreen';
 import ExpenseForm from '../../components/expenseForm/ExpenseForm';
 import { authService, criarDespesa } from '../../../services/api';
 import './new.css';
@@ -35,13 +36,7 @@ export default function NewExpensePage() {
   };
 
   if (!autenticado) {
-    return (
-      <Layout>
-        <div className="new-container">
-          <p>Carregando...</p>
-        </div>
-      </Layout>
-    );
+    return <LoadingScreen message="Preparando formulário..." />;
   }
 
   return (

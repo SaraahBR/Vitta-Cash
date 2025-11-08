@@ -1,37 +1,41 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import Layout from '../../components/layout/Layout';
 import Header from '../../components/header/Header';
+import LoadingScreen from '../../components/loading/LoadingScreen';
 import ExpenseForm from '../../components/expenseForm/ExpenseForm';
 import { authService, obterDespesa, atualizarDespesa } from '../../../services/api';
 import './edit.css';
 
 export default function EditExpensePage({ params }) {
+  // Desembrulhar a Promise params com React.use()
+  const { id } = use(params);
+  
   const router = useRouter();
   const [despesa, setDespesa] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [autenticado, setAutenticado] = useState(false);
 
   useEffect(() => {
-    const verificarAuth = () => {
+    const verificarAuth = async () => {
       const isAuth = authService.isAuthenticated();
       setAutenticado(isAuth);
       
       if (!isAuth) {
         router.push('/');
-      } else if (params?.id) {
-        carregarDespesa();
+      } else if (id) {
+        await carregarDespesa();
       }
     };
 
     verificarAuth();
-  }, [params]);
+  }, [id, router]);
 
   const carregarDespesa = async () => {
     try {
-      const dados = await obterDespesa(params.id);
+      const dados = await obterDespesa(id);
       setDespesa(dados);
     } catch (erro) {
       console.error('Erro ao carregar despesa:', erro);
@@ -44,7 +48,7 @@ export default function EditExpensePage({ params }) {
 
   const handleSalvar = async (dados) => {
     try {
-      await atualizarDespesa(params.id, dados);
+      await atualizarDespesa(id, dados);
       router.push('/expenses');
     } catch (erro) {
       throw new Error(erro.response?.data?.mensagem || 'Erro ao atualizar despesa');
@@ -56,13 +60,7 @@ export default function EditExpensePage({ params }) {
   };
 
   if (!autenticado || carregando) {
-    return (
-      <Layout>
-        <div className="edit-container">
-          <p>Carregando...</p>
-        </div>
-      </Layout>
-    );
+    return <LoadingScreen message="Carregando despesa..." />;
   }
 
   return (

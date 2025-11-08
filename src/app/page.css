@@ -38,7 +38,10 @@
 .page-total {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #3b82f6;
+  background: linear-gradient(135deg, #34d399 0%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0.5rem 0;
 }
 
@@ -46,6 +49,32 @@
   font-size: 1rem;
   color: #9ca3af;
   margin: 0;
+}
+
+.page-graficos {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+
+.page-graficos h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+}
+
+.page-graficos > div {
+  min-height: 400px;
+}
+
+.page-categorias {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .page-categorias h3 {
@@ -80,11 +109,47 @@
 }
 
 @media (max-width: 768px) {
+  .page-container {
+    padding: 1rem 0.5rem;
+  }
+
   .page-resumo {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .page-card {
+    padding: 1.5rem;
   }
 
   .page-total {
     font-size: 2rem;
+  }
+
+  .page-graficos {
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-graficos h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-graficos > div {
+    min-height: 350px;
+  }
+
+  .page-categorias {
+    padding: 1rem;
+  }
+
+  .page-categorias h3 {
+    font-size: 1.25rem;
+  }
+
+  .page-categoria-item {
+    padding: 0.75rem;
+    font-size: 0.875rem;
   }
 }

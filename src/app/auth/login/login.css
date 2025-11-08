@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+  background: linear-gradient(135deg, #047857 0%, #34d399 50%, #fbbf24 100%);
   background-size: 200% 200%;
   animation: gradientMove 10s ease infinite;
   padding: 2rem;
@@ -91,7 +91,7 @@
   margin-bottom: 0.5rem;
   text-align: center;
   font-weight: 700;
-  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+  background: linear-gradient(135deg, #047857, #34d399);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -150,8 +150,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  border-color: #34d399;
+  box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.1);
   background: white;
   transform: translateY(-2px);
 }
@@ -163,7 +163,7 @@
 }
 
 .btn-login {
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+  background: linear-gradient(135deg, #047857 0%, #34d399 50%, #fbbf24 100%);
   background-size: 200% 200%;
   color: white;
   padding: 1.125rem;
@@ -174,7 +174,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 0.5rem;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3);
   animation: gradientButton 3s ease infinite;
 }
 
@@ -189,7 +189,7 @@
 
 .btn-login:hover:not(:disabled) {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 8px 25px rgba(52, 211, 153, 0.4);
 }
 
 .btn-login:active:not(:disabled) {
@@ -259,7 +259,7 @@
 
 .link-cadastro,
 .link-reenviar {
-  color: #3b82f6;
+  color: #34d399;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -268,7 +268,7 @@
 
 .link-cadastro:hover,
 .link-reenviar:hover {
-  color: #1e3a8a;
+  color: #047857;
   transform: translateX(2px);
 }
 
@@ -280,7 +280,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #3b82f6;
+  background: #34d399;
   transition: width 0.3s ease;
 }
 

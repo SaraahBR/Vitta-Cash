@@ -64,18 +64,22 @@ export default function LoginButton() {
   };
 
   if (isAuthenticated && user) {
+    // Suporte para campos em português e inglês
+    const imagemUsuario = user.image || user.imagem;
+    const nomeUsuario = user.name || user.nome;
+
     return (
       <div className="login-button-container">
         <div className="user-info">
-          {user.image && (
+          {imagemUsuario && (
             <img 
-              src={user.image} 
-              alt={user.name || user.nome} 
+              src={imagemUsuario} 
+              alt={nomeUsuario || 'Usuário'} 
               className="user-avatar"
               referrerPolicy="no-referrer"
             />
           )}
-          <span>Olá, {user.name || user.nome || 'Usuário'}</span>
+          <span>Olá, {nomeUsuario || 'Usuário'}</span>
           <button onClick={authService.logout} className="logout-button">
             Sair
           </button>

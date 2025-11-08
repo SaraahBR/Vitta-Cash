@@ -1,4 +1,6 @@
 import axios from 'axios';
+import cacheGlobal, { TTL } from '../lib/cache';
+import localCache from '../lib/localCache';
 
 const TOKEN_KEY = 'vittacash_token';
 const USER_KEY = 'vittacash_user';
@@ -38,6 +40,34 @@ export const authService = {
   isAuthenticated: () => !!authService.getToken(),
 };
 
+/**
+ * Busca com cache híbrido (memória + localStorage)
+ */
+const buscarComCacheHibrido = async (chave, funcaoBusca, ttlMemoria, ttlLocalMinutos = 30) => {
+  // 1. Tenta cache em memória (mais rápido)
+  const dadosMemoria = cacheGlobal.get(chave);
+  if (dadosMemoria !== null) {
+    return dadosMemoria;
+  }
+
+  // 2. Tenta localStorage (persiste entre sessões)
+  const dadosLocal = localCache.get(chave);
+  if (dadosLocal !== null) {
+    // Salva também na memória para próximas buscas
+    cacheGlobal.set(chave, dadosLocal, ttlMemoria);
+    return dadosLocal;
+  }
+
+  // 3. Busca da API
+  const dados = await funcaoBusca();
+
+  // 4. Salva em ambos os caches
+  cacheGlobal.set(chave, dados, ttlMemoria);
+  localCache.set(chave, dados, ttlLocalMinutos);
+
+  return dados;
+};
+
 apiClient.interceptors.request.use((config) => {
   const token = authService.getToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -53,43 +83,91 @@ apiClient.interceptors.response.use(
 );
 
 export const listarDespesas = async (filtros = {}) => {
-  const params = new URLSearchParams();
-  if (filtros.month) params.append('month', filtros.month);
-  if (filtros.year) params.append('year', filtros.year);
-  if (filtros.category) params.append('category', filtros.category);
-  if (filtros.from) params.append('from', filtros.from);
-  if (filtros.to) params.append('to', filtros.to);
-  const response = await apiClient.get(`/expenses?${params.toString()}`);
-  return response.data;
+  const chaveCache = cacheGlobal.gerarChave('despesas', filtros);
+  
+  return buscarComCacheHibrido(
+    chaveCache,
+    async () => {
+      const params = new URLSearchParams();
+      if (filtros.month) params.append('month', filtros.month);
+      if (filtros.year) params.append('year', filtros.year);
+      if (filtros.category) params.append('category', filtros.category);
+      if (filtros.from) params.append('from', filtros.from);
+      if (filtros.to) params.append('to', filtros.to);
+      const response = await apiClient.get(`/expenses?${params.toString()}`);
+      return response.data;
+    },
+    TTL.DESPESAS,
+    10 // 10 minutos no localStorage
+  );
 };
 
 export const criarDespesa = async (dados) => {
   const response = await apiClient.post('/expenses', dados);
+  // Invalida cache de despesas e relatórios após criar (memória + localStorage)
+  cacheGlobal.invalidarPorPrefixo('despesas');
+  cacheGlobal.invalidarPorPrefixo('relatorio');
+  localCache.removerPorPrefixo('despesas');
+  localCache.removerPorPrefixo('relatorio');
   return response.data;
 };
 
 export const obterDespesa = async (id) => {
-  const response = await apiClient.get(`/expenses/${id}`);
-  return response.data;
+  const chaveCache = cacheGlobal.gerarChave('despesa', { id });
+  
+  return buscarComCacheHibrido(
+    chaveCache,
+    async () => {
+      const response = await apiClient.get(`/expenses/${id}`);
+      return response.data;
+    },
+    TTL.DESPESAS,
+    15 // 15 minutos no localStorage
+  );
 };
 
 export const atualizarDespesa = async (id, dados) => {
   const response = await apiClient.put(`/expenses/${id}`, dados);
+  // Invalida cache desta despesa específica e listas (memória + localStorage)
+  const chaveEspecifica = cacheGlobal.gerarChave('despesa', { id });
+  cacheGlobal.invalidar(chaveEspecifica);
+  localCache.remover(chaveEspecifica);
+  cacheGlobal.invalidarPorPrefixo('despesas');
+  cacheGlobal.invalidarPorPrefixo('relatorio');
+  localCache.removerPorPrefixo('despesas');
+  localCache.removerPorPrefixo('relatorio');
   return response.data;
 };
 
 export const deletarDespesa = async (id) => {
   const response = await apiClient.delete(`/expenses/${id}`);
+  // Invalida cache desta despesa específica e listas (memória + localStorage)
+  const chaveEspecifica = cacheGlobal.gerarChave('despesa', { id });
+  cacheGlobal.invalidar(chaveEspecifica);
+  localCache.remover(chaveEspecifica);
+  cacheGlobal.invalidarPorPrefixo('despesas');
+  cacheGlobal.invalidarPorPrefixo('relatorio');
+  localCache.removerPorPrefixo('despesas');
+  localCache.removerPorPrefixo('relatorio');
   return response.data;
 };
 
 export const excluirDespesa = deletarDespesa;
 
 export const obterRelatorio = async (tipo, ano, mes = null) => {
-  const params = new URLSearchParams({ type: tipo, year: ano });
-  if (mes && tipo === 'monthly') params.append('month', mes);
-  const response = await apiClient.get(`/expenses/report?${params.toString()}`);
-  return response.data;
+  const chaveCache = cacheGlobal.gerarChave('relatorio', { tipo, ano, mes });
+  
+  return buscarComCacheHibrido(
+    chaveCache,
+    async () => {
+      const params = new URLSearchParams({ type: tipo, year: ano });
+      if (mes && tipo === 'monthly') params.append('month', mes);
+      const response = await apiClient.get(`/expenses/report?${params.toString()}`);
+      return response.data;
+    },
+    TTL.RELATORIOS,
+    20 // 20 minutos no localStorage
+  );
 };
 
 export const exportarDespesas = (mes, ano) => {

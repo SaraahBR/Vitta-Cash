@@ -5,7 +5,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+  border-bottom: 1px solid rgba(52, 211, 153, 0.1);
   transition: all 0.3s ease;
 }
 
@@ -43,7 +43,7 @@
 
 .navbar-logo-icon {
   transition: transform 0.3s ease;
-  filter: drop-shadow(0 2px 8px rgba(59, 130, 246, 0.3));
+  filter: drop-shadow(0 2px 8px rgba(52, 211, 153, 0.3));
 }
 
 .navbar-logo:hover .navbar-logo-icon {
@@ -136,7 +136,7 @@
 }
 
 .hamburger-line.open:nth-child(1) {
-  transform: rotate(45deg) translateY(8px);
+  transform: rotate(45deg) translate(6px, 6px);
 }
 
 .hamburger-line.open:nth-child(2) {
@@ -144,7 +144,7 @@
 }
 
 .hamburger-line.open:nth-child(3) {
-  transform: rotate(-45deg) translateY(-8px);
+  transform: rotate(-45deg) translate(6px, -6px);
 }
 
 /* Mobile */

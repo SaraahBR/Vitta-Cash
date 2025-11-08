@@ -79,7 +79,8 @@ export async function GET(request) {
 
 /**
  * POST /api/expenses - Cria nova despesa
- * Body: { title, amount, date, category, recurring, recurrenceType, notes }
+ * Body: { descricao, valor, data, categoria, recorrente, tipoRecorrencia, notas } (português)
+ *    OU { title, amount, date, category, recurring, recurrenceType, notes } (inglês - retrocompatibilidade)
  */
 export async function POST(request) {
   // Verificar autenticação
@@ -94,19 +95,36 @@ export async function POST(request) {
   try {
     const dadosEntrada = await request.json();
 
+    // Normalizar campos: aceitar português ou inglês
+    const dadosNormalizados = {
+      descricao: dadosEntrada.descricao || dadosEntrada.title,
+      valor: dadosEntrada.valor ?? dadosEntrada.amount,
+      data: dadosEntrada.data || dadosEntrada.date,
+      categoria: dadosEntrada.categoria || dadosEntrada.category,
+      recorrente: dadosEntrada.recorrente ?? dadosEntrada.recurring ?? false,
+      tipoRecorrencia: dadosEntrada.tipoRecorrencia || dadosEntrada.recurrenceType || 'NONE',
+      notas: dadosEntrada.notas ?? dadosEntrada.notes ?? null,
+    };
+
     // Validar dados
-    const { valido, erros } = validarDespesa(dadosEntrada);
+    const { valido, erros } = validarDespesa(dadosNormalizados);
     if (!valido) {
       return NextResponse.json({ erro: 'Dados inválidos', detalhes: erros }, { status: 400 });
     }
 
-    // Sanitizar e preparar dados
-    const dadosLimpos = sanitizarDadosDespesa(dadosEntrada);
+    // Sanitizar e preparar dados para o banco (que usa campos em inglês)
+    const dadosLimpos = sanitizarDadosDespesa(dadosNormalizados);
 
     // Criar despesa no banco
     const novaDespesa = await prisma.expense.create({
       data: {
-        ...dadosLimpos,
+        title: dadosLimpos.descricao,
+        amount: dadosLimpos.valor,
+        date: dadosLimpos.data,
+        category: dadosLimpos.categoria,
+        recurring: dadosLimpos.recorrente,
+        recurrenceType: dadosLimpos.tipoRecorrencia,
+        notes: dadosLimpos.notas,
         userId,
       },
     });

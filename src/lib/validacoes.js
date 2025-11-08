@@ -6,53 +6,55 @@
 export function validarDespesa(dados) {
   const erros = [];
 
-  // Validar título
-  if (!dados.title || typeof dados.title !== 'string' || dados.title.trim().length === 0) {
-    erros.push('Título é obrigatório');
-  } else if (dados.title.length > 200) {
-    erros.push('Título deve ter no máximo 200 caracteres');
+  // Validar descrição
+  if (!dados.descricao || typeof dados.descricao !== 'string' || dados.descricao.trim().length === 0) {
+    erros.push('Descrição é obrigatória');
+  } else if (dados.descricao.length < 3) {
+    erros.push('Descrição deve ter no mínimo 3 caracteres');
+  } else if (dados.descricao.length > 255) {
+    erros.push('Descrição deve ter no máximo 255 caracteres');
   }
 
   // Validar valor
-  if (dados.amount === undefined || dados.amount === null) {
+  if (dados.valor === undefined || dados.valor === null) {
     erros.push('Valor é obrigatório');
   } else {
-    const valorNumerico = parseFloat(dados.amount);
+    const valorNumerico = parseFloat(dados.valor);
     if (isNaN(valorNumerico) || valorNumerico <= 0) {
       erros.push('Valor deve ser um número positivo');
     }
   }
 
   // Validar data
-  if (!dados.date) {
+  if (!dados.data) {
     erros.push('Data é obrigatória');
   } else {
-    const dataObj = new Date(dados.date);
+    const dataObj = new Date(dados.data);
     if (isNaN(dataObj.getTime())) {
       erros.push('Data inválida');
     }
   }
 
   // Validar categoria
-  if (!dados.category || typeof dados.category !== 'string' || dados.category.trim().length === 0) {
+  if (!dados.categoria || typeof dados.categoria !== 'string' || dados.categoria.trim().length === 0) {
     erros.push('Categoria é obrigatória');
   }
 
   // Validar recorrência
-  if (dados.recurring !== undefined && typeof dados.recurring !== 'boolean') {
-    erros.push('Campo "recurring" deve ser booleano');
+  if (dados.recorrente !== undefined && typeof dados.recorrente !== 'boolean') {
+    erros.push('Campo "recorrente" deve ser booleano');
   }
 
   // Validar tipo de recorrência
   const tiposValidos = ['NONE', 'MONTHLY', 'YEARLY'];
-  if (dados.recurrenceType && !tiposValidos.includes(dados.recurrenceType)) {
+  if (dados.tipoRecorrencia && !tiposValidos.includes(dados.tipoRecorrencia)) {
     erros.push('Tipo de recorrência inválido (deve ser NONE, MONTHLY ou YEARLY)');
   }
 
   // Validar notas (opcional)
-  if (dados.notes && typeof dados.notes !== 'string') {
+  if (dados.notas && typeof dados.notas !== 'string') {
     erros.push('Notas devem ser texto');
-  } else if (dados.notes && dados.notes.length > 1000) {
+  } else if (dados.notas && dados.notas.length > 1000) {
     erros.push('Notas devem ter no máximo 1000 caracteres');
   }
 
@@ -69,12 +71,12 @@ export function validarDespesa(dados) {
  */
 export function sanitizarDadosDespesa(dados) {
   return {
-    title: dados.title?.trim(),
-    amount: parseFloat(dados.amount),
-    date: new Date(dados.date),
-    category: dados.category?.trim(),
-    recurring: Boolean(dados.recurring),
-    recurrenceType: dados.recurrenceType || 'NONE',
-    notes: dados.notes?.trim() || null,
+    descricao: dados.descricao?.trim(),
+    valor: parseFloat(dados.valor),
+    data: new Date(dados.data),
+    categoria: dados.categoria?.trim(),
+    recorrente: Boolean(dados.recorrente),
+    tipoRecorrencia: dados.tipoRecorrencia || 'NONE',
+    notas: dados.notas?.trim() || null,
   };
 }

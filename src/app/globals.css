@@ -1,3 +1,14 @@
+:root {
+  /* Cores principais da marca VittaCash */
+  --primary-color: #34d399;        /* Verde suave */
+  --primary-hover: #10b981;        /* Verde mais escuro */
+  --primary-light: #6ee7b7;        /* Verde claro */
+  --secondary-color: #fbbf24;      /* Amarelo suave */
+  --secondary-hover: #f59e0b;      /* Amarelo mais escuro */
+  --gradient-primary: linear-gradient(135deg, #34d399 0%, #fbbf24 100%);
+  --gradient-hover: linear-gradient(135deg, #10b981 0%, #f59e0b 100%);
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

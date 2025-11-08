@@ -79,13 +79,17 @@ export default function ProfileButton() {
     );
   }
 
+  // Suporte para campos em português e inglês
+  const imagemUsuario = usuario?.image || usuario?.imagem;
+  const nomeUsuario = usuario?.name || usuario?.nome;
+
   return (
     <div className="profile-button-container" ref={dropdownRef}>
       <button className="profile-icon-btn authenticated" onClick={toggleDropdown}>
-        {usuario?.image ? (
+        {imagemUsuario ? (
           <img 
-            src={usuario.image} 
-            alt={usuario.name || usuario.email} 
+            src={imagemUsuario} 
+            alt={nomeUsuario || usuario.email} 
             className="profile-avatar-img"
             referrerPolicy="no-referrer"
           />
@@ -100,10 +104,10 @@ export default function ProfileButton() {
         <div className="profile-dropdown">
           <div className="profile-dropdown-header">
             <div className="profile-dropdown-avatar">
-              {usuario?.image ? (
+              {imagemUsuario ? (
                 <img 
-                  src={usuario.image} 
-                  alt={usuario.name || usuario.email}
+                  src={imagemUsuario} 
+                  alt={nomeUsuario || usuario.email}
                   referrerPolicy="no-referrer"
                 />
               ) : (
@@ -113,7 +117,7 @@ export default function ProfileButton() {
               )}
             </div>
             <div className="profile-dropdown-info">
-              <p className="profile-dropdown-name">{usuario?.name || usuario?.nome || 'Usuário'}</p>
+              <p className="profile-dropdown-name">{nomeUsuario || 'Usuário'}</p>
               <p className="profile-dropdown-email">{usuario?.email}</p>
             </div>
           </div>

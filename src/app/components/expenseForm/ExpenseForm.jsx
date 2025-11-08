@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { validarDespesa } from '@/lib/validacoes';
+import { formatarValorInput, desformatarValor } from '@/lib/formatadores';
+import LoadingScreen from '../loading/LoadingScreen';
 import './expenseForm.css';
 
 const CATEGORIAS = [
@@ -30,6 +32,7 @@ export default function ExpenseForm({ despesaInicial, aoSalvar, aoCancelar }) {
   const [formData, setFormData] = useState({
     titulo: '',
     valor: '',
+    valorFormatado: '', // Novo campo para exibição formatada
     data: new Date().toISOString().split('T')[0],
     categoria: 'Outros',
     recorrente: false,
@@ -39,9 +42,9 @@ export default function ExpenseForm({ despesaInicial, aoSalvar, aoCancelar }) {
 
   useEffect(() => {
     if (despesaInicial) {
-      // Suportar tanto objetos com chaves em português (titulo, valor, data, ...) quanto em inglês
-      const titulo = despesaInicial.titulo || despesaInicial.title || '';
-      const valor = (despesaInicial.valor ?? despesaInicial.amount)?.toString() || '';
+      // Suportar tanto objetos com chaves em português quanto em inglês (vindos da API)
+      const titulo = despesaInicial.descricao || despesaInicial.titulo || despesaInicial.title || '';
+      const valorNumerico = despesaInicial.valor ?? despesaInicial.amount ?? 0;
       const dataVal = despesaInicial.data || despesaInicial.date || new Date().toISOString().split('T')[0];
       const categoria = despesaInicial.categoria || despesaInicial.category || 'Outros';
       const recorrente = despesaInicial.recorrente ?? despesaInicial.recurring ?? false;
@@ -50,7 +53,8 @@ export default function ExpenseForm({ despesaInicial, aoSalvar, aoCancelar }) {
 
       setFormData({
         titulo,
-        valor,
+        valor: valorNumerico,
+        valorFormatado: formatarValorInput((valorNumerico * 100).toString()),
         data: dataVal ? new Date(dataVal).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         categoria,
         recorrente,
@@ -68,38 +72,44 @@ export default function ExpenseForm({ despesaInicial, aoSalvar, aoCancelar }) {
     }));
   };
 
+  const handleValorChange = (e) => {
+    const input = e.target.value;
+    const valorFormatado = formatarValorInput(input);
+    const valorNumerico = desformatarValor(valorFormatado);
+    
+    setFormData((prev) => ({
+      ...prev,
+      valorFormatado,
+      valor: valorNumerico,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro('');
     setCarregando(true);
 
     try {
-      // Mapear campos do formulário (em português) para o shape esperado pela API/tests (em inglês)
-      const dadosParaValidar = {
-        title: formData.titulo,
-        amount: formData.valor,
-        date: formData.data,
-        category: formData.categoria,
-        recurring: Boolean(formData.recorrente),
-        recurrenceType: formData.tipoRecorrencia,
-        notes: formData.notas,
-      };
-
-      const { valido, erros } = validarDespesa(dadosParaValidar);
-      if (!valido) {
-        setErro(erros.join(', '));
+      // Validar se o valor foi preenchido
+      if (!formData.valor || formData.valor <= 0) {
+        setErro('Valor deve ser maior que zero');
         setCarregando(false);
         return;
       }
 
+      // Criar data sem conversão de timezone (meio-dia do dia selecionado)
+      const [ano, mes, dia] = formData.data.split('-');
+      const dataCorreta = new Date(ano, mes - 1, dia, 12, 0, 0);
+
+      // Enviar dados em português como o backend espera
       const dados = {
-        title: formData.titulo,
-        amount: parseFloat(formData.valor),
-        date: formData.data, // manter formato YYYY-MM-DD para os testes
-        category: formData.categoria,
-        recurring: Boolean(formData.recorrente),
-        recurrenceType: formData.tipoRecorrencia,
-        notes: formData.notas || null,
+        descricao: formData.titulo,
+        valor: formData.valor, // Já é um número
+        data: dataCorreta.toISOString(), // Enviar como ISO string
+        categoria: formData.categoria,
+        recorrente: Boolean(formData.recorrente),
+        tipoRecorrencia: formData.tipoRecorrencia,
+        notas: formData.notas || null,
       };
 
       if (aoSalvar) {
@@ -121,10 +131,13 @@ export default function ExpenseForm({ despesaInicial, aoSalvar, aoCancelar }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="expense-form">
-      {erro && <div className="expense-form-error">{erro}</div>}
+    <>
+      {carregando && <LoadingScreen message="Salvando despesa..." />}
+      
+      <form onSubmit={handleSubmit} className="expense-form">
+        {erro && <div className="expense-form-error">{erro}</div>}
 
-      <div className="expense-form-group">
+        <div className="expense-form-group">
         <label htmlFor="titulo" className="expense-form-label">
           Título *
         </label>
@@ -144,15 +157,14 @@ export default function ExpenseForm({ despesaInicial, aoSalvar, aoCancelar }) {
           Valor (R$) *
         </label>
         <input
-          type="number"
+          type="text"
           id="valor"
           name="valor"
-          value={formData.valor}
-          onChange={handleChange}
-          step="0.01"
-          min="0"
+          value={formData.valorFormatado}
+          onChange={handleValorChange}
           className="expense-form-input"
-          placeholder="0.00"
+          placeholder="0,00"
+          inputMode="numeric"
         />
       </div>
 
@@ -258,5 +270,6 @@ export default function ExpenseForm({ despesaInicial, aoSalvar, aoCancelar }) {
         </button>
       </div>
     </form>
+    </>
   );
 }

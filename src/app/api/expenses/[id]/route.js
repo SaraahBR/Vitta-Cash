@@ -68,18 +68,38 @@ export async function PUT(request, { params }) {
 
     // Validar novos dados
     const dadosEntrada = await request.json();
-    const { valido, erros } = validarDespesa(dadosEntrada);
+    
+    // Normalizar campos: aceitar português ou inglês
+    const dadosNormalizados = {
+      descricao: dadosEntrada.descricao || dadosEntrada.title,
+      valor: dadosEntrada.valor ?? dadosEntrada.amount,
+      data: dadosEntrada.data || dadosEntrada.date,
+      categoria: dadosEntrada.categoria || dadosEntrada.category,
+      recorrente: dadosEntrada.recorrente ?? dadosEntrada.recurring,
+      tipoRecorrencia: dadosEntrada.tipoRecorrencia || dadosEntrada.recurrenceType,
+      notas: dadosEntrada.notas ?? dadosEntrada.notes,
+    };
+    
+    const { valido, erros } = validarDespesa(dadosNormalizados);
     
     if (!valido) {
       return NextResponse.json({ erro: 'Dados inválidos', detalhes: erros }, { status: 400 });
     }
 
-    const dadosLimpos = sanitizarDadosDespesa(dadosEntrada);
+    const dadosLimpos = sanitizarDadosDespesa(dadosNormalizados);
 
-    // Atualizar despesa
+    // Atualizar despesa (converter para campos em inglês do banco)
     const despesaAtualizada = await prisma.expense.update({
       where: { id },
-      data: dadosLimpos,
+      data: {
+        title: dadosLimpos.descricao,
+        amount: dadosLimpos.valor,
+        date: dadosLimpos.data,
+        category: dadosLimpos.categoria,
+        recurring: dadosLimpos.recorrente,
+        recurrenceType: dadosLimpos.tipoRecorrencia,
+        notes: dadosLimpos.notas,
+      },
     });
 
     return NextResponse.json(despesaAtualizada);

@@ -1,46 +1,92 @@
-# VittaCash
+# VittaCash 💰
 
 <p align="center">
   <img src="public/LOGO_VittaCash.png" alt="VittaCash Logo" width="400"/>
 </p>
 
-Sistema de Controle de Gastos Pessoais desenvolvido com Next.js 16, NextAuth.js, Prisma e PostgreSQL.
+<p align="center">
+  <strong>Sistema completo de Controle de Gastos Pessoais com Dashboard interativo, gráficos de análise e relatórios detalhados</strong>
+</p>
+
+<p align="center">
+  Desenvolvido com Next.js 16, NextAuth.js, Prisma, PostgreSQL e Recharts
+</p>
 
 ---
 
-## 📋 Características
+## ✨ Características Principais
 
+### 🔐 Autenticação e Segurança
 - ✅ Autenticação via Google OAuth (NextAuth.js)
-- ✅ CRUD completo de despesas
-- ✅ Filtros por mês, ano e categoria
-- ✅ Relatórios mensais e anuais
-- ✅ Exportação/Importação de dados em CSV
-- ✅ Suporte a despesas recorrentes (mensal/anual)
-- ✅ Validação de dados server-side e client-side
-- ✅ Interface responsiva e moderna
-- ✅ Banco de dados com Prisma ORM (PostgreSQL)
+- ✅ Autenticação via Email e Senha
+- ✅ Verificação de email obrigatória
+- ✅ Sistema de reenvio de email de verificação
+- ✅ Proteção de rotas autenticadas
+- ✅ Gerenciamento seguro de sessões com JWT
+
+### 💵 Gestão de Despesas
+- ✅ CRUD completo de despesas (Criar, Ler, Atualizar, Deletar)
+- ✅ Categorização customizável (Alimentação, Transporte, Moradia, etc.)
+- ✅ Despesas recorrentes (mensal/anual)
+- ✅ Filtros avançados por mês, ano, categoria e período
+- ✅ Notas e descrições detalhadas
+- ✅ Validação de dados em tempo real
+
+### 📊 Dashboard e Visualização
+- ✅ Dashboard interativo com resumo financeiro
+- ✅ Gráfico de Pizza: despesas por categoria (mensal)
+- ✅ Gráfico de Barras: evolução de gastos ao longo do ano
+- ✅ Cards informativos com totais do mês e ano
+- ✅ Indicadores de média de gastos mensais
+- ✅ Visualização responsiva para desktop e mobile
+
+### 📈 Relatórios e Análises
+- ✅ Relatórios mensais detalhados
+- ✅ Relatórios anuais consolidados
+- ✅ Exportação de dados em CSV
+- ✅ Importação de despesas via CSV
+- ✅ Análise de gastos por categoria
+- ✅ Análise de evolução temporal
+
+### 🎨 Interface e Experiência
+- ✅ Design moderno com gradiente verde/amarelo
+- ✅ Interface 100% responsiva (mobile-first)
+- ✅ Animações e transições suaves
+- ✅ Menu hamburguer para navegação mobile
+- ✅ Feedback visual em todas as ações
+- ✅ Loading states e tratamento de erros
+
+### 🧪 Qualidade de Código
 - ✅ Testes automatizados com Jest
+- ✅ Validação server-side e client-side
+- ✅ ESLint + Prettier para código limpo
+- ✅ TypeScript-ready com jsconfig.json
+- ✅ Componentização modular
+- ✅ Banco de dados com Prisma ORM (PostgreSQL)
 
 ---
 
 ## 🚀 Tecnologias
 
 ### Frontend
-- **Next.js 16** (App Router)
-- **React 19** com React Compiler
-- **CSS Modules** para estilização
-- **Axios** para requisições HTTP
+- **Next.js 15.1.3** (App Router - Nova arquitetura)
+- **React 19.0.0** com React Compiler otimizado
+- **Recharts 2.15.0** para gráficos interativos
+- **CSS Modules** para estilização componentizada
+- **Axios 1.7.9** para requisições HTTP
 
 ### Backend/API
-- **Next.js API Routes** (Route Handlers)
-- **NextAuth.js 4.24** para autenticação OAuth
-- **Prisma 5.7** como ORM
-- **PostgreSQL** (Supabase)
+- **Next.js API Routes** (Route Handlers modernos)
+- **NextAuth.js 4.24.11** para autenticação OAuth e credenciais
+- **Prisma 5.7.1** como ORM
+- **PostgreSQL** (Supabase Cloud)
+- **Bcrypt 5.1.1** para criptografia de senhas
 
-### Desenvolvimento
-- **ESLint** + **Prettier** para código limpo
-- **Jest** + **React Testing Library** para testes
-- **Formidable** para upload de arquivos
+### Desenvolvimento e Testes
+- **ESLint 9** + **Prettier** para código limpo
+- **Jest 29.7.0** + **React Testing Library 16** para testes
+- **Formidable 3.5.2** para upload de arquivos CSV
+- **jsconfig.json** para intellisense e imports absolutos
 
 ---
 
@@ -49,99 +95,193 @@ Sistema de Controle de Gastos Pessoais desenvolvido com Next.js 16, NextAuth.js,
 ```
 vittacash/
 ├── src/
-│   ├── app/                          # App Router (Next.js 13+)
-│   │   ├── api/                      # API Routes
+│   ├── app/                                    # App Router (Next.js 15)
+│   │   ├── api/                                # API Routes (Backend)
 │   │   │   ├── auth/
 │   │   │   │   └── [...nextauth]/
-│   │   │   │       └── route.js      # Configuração NextAuth
+│   │   │   │       └── route.js                # Configuração NextAuth (Google + Credenciais)
 │   │   │   ├── expenses/
-│   │   │   │   ├── route.js          # GET (listar) e POST (criar)
+│   │   │   │   ├── route.js                    # GET (listar) e POST (criar)
 │   │   │   │   ├── [id]/
-│   │   │   │   │   └── route.js      # GET, PUT, DELETE (individual)
+│   │   │   │   │   └── route.js                # GET, PUT, DELETE (individual)
 │   │   │   │   ├── export/
-│   │   │   │   │   └── route.js      # Exportar CSV
+│   │   │   │   │   └── route.js                # Exportar CSV
 │   │   │   │   ├── import/
-│   │   │   │   │   └── route.js      # Importar CSV
+│   │   │   │   │   └── route.js                # Importar CSV (multipart)
 │   │   │   │   └── report/
-│   │   │   │       └── route.js      # Relatórios mensais/anuais
+│   │   │   │       └── route.js                # Relatórios mensais/anuais
 │   │   │   └── health/
-│   │   │       └── route.js          # Health check
-│   │   ├── auth/                     # Páginas de autenticação
+│   │   │       └── route.js                    # Health check
+│   │   │
+│   │   ├── auth/                               # Páginas de autenticação
 │   │   │   ├── login/
+│   │   │   │   ├── page.js                     # Página de login
+│   │   │   │   └── login.css                   # Estilos do login
 │   │   │   ├── cadastro/
+│   │   │   │   ├── page.js                     # Página de cadastro
+│   │   │   │   └── cadastro.css                # Estilos do cadastro
 │   │   │   ├── verificar-email/
+│   │   │   │   ├── page.js                     # Página de verificação
+│   │   │   │   └── verificar-email.css         # Estilos da verificação
 │   │   │   └── reenviar-verificacao/
-│   │   ├── components/               # Componentes React
+│   │   │       ├── page.js                     # Página de reenvio
+│   │   │       └── reenviar-verificacao.css    # Estilos do reenvio
+│   │   │
+│   │   ├── components/                         # Componentes React
 │   │   │   ├── authButton/
+│   │   │   │   ├── AuthButton.jsx              # Botão de autenticação
+│   │   │   │   └── authButton.css              # Estilos do botão
+│   │   │   ├── authModal/
+│   │   │   │   ├── AuthModal.jsx               # Modal de autenticação
+│   │   │   │   └── authModal.css               # Estilos do modal
 │   │   │   ├── authProvider/
+│   │   │   │   └── AuthProvider.jsx            # Provider de contexto
+│   │   │   ├── charts/
+│   │   │   │   └── ReportsCharts.jsx           # 📊 Gráficos Recharts (Novo!)
 │   │   │   ├── expenseForm/
+│   │   │   │   ├── ExpenseForm.jsx             # Formulário de despesas
+│   │   │   │   └── expenseForm.css             # Estilos do formulário
 │   │   │   ├── footer/
+│   │   │   │   ├── Footer.jsx                  # Rodapé
+│   │   │   │   └── footer.css                  # Estilos do rodapé
 │   │   │   ├── header/
+│   │   │   │   ├── Header.jsx                  # Cabeçalho
+│   │   │   │   └── header.css                  # Estilos do cabeçalho
 │   │   │   ├── hero/
+│   │   │   │   ├── Hero.jsx                    # Hero section
+│   │   │   │   └── hero.css                    # Estilos do hero
 │   │   │   ├── layout/
+│   │   │   │   ├── Layout.jsx                  # Layout wrapper
+│   │   │   │   └── layout.css                  # Estilos do layout
+│   │   │   ├── loading/
+│   │   │   │   ├── LoadingScreen.jsx           # Tela de carregamento
+│   │   │   │   └── loadingScreen.css           # Estilos do loading
 │   │   │   ├── loginButton/
+│   │   │   │   ├── LoginButton.jsx             # Botão de login
+│   │   │   │   └── loginButton.css             # Estilos do botão
 │   │   │   ├── navbar/
+│   │   │   │   ├── Navbar.jsx                  # Barra de navegação
+│   │   │   │   └── navbar.css                  # Estilos da navbar
+│   │   │   ├── profileButton/
+│   │   │   │   ├── ProfileButton.jsx           # Botão de perfil
+│   │   │   │   └── profileButton.css           # Estilos do botão
 │   │   │   └── sessionProvider/
-│   │   ├── expenses/                 # Páginas de despesas
-│   │   │   ├── page.js              # Lista de despesas
+│   │   │       └── SessionProvider.jsx         # Provider de sessão
+│   │   │
+│   │   ├── expenses/                           # Páginas de despesas
+│   │   │   ├── page.js                         # Lista de despesas
+│   │   │   ├── expenses.css                    # Estilos da lista
 │   │   │   ├── new/
-│   │   │   │   └── page.js          # Nova despesa
+│   │   │   │   ├── page.js                     # Nova despesa
+│   │   │   │   └── new.css                     # Estilos da criação
 │   │   │   └── [id]/
-│   │   │       └── page.js          # Editar despesa
+│   │   │       ├── page.js                     # Editar despesa
+│   │   │       └── edit.css                    # Estilos da edição
+│   │   │
 │   │   ├── reports/
-│   │   │   └── page.js              # Página de relatórios
-│   │   ├── layout.js                # Layout raiz
-│   │   ├── page.js                  # Página inicial (dashboard)
-│   │   └── globals.css              # Estilos globais
+│   │   │   ├── page.js                         # Página de relatórios
+│   │   │   └── reports.css                     # Estilos dos relatórios
+│   │   │
+│   │   ├── layout.js                           # Layout raiz da aplicação
+│   │   ├── page.js                             # 🏠 Dashboard principal (Com gráficos!)
+│   │   ├── page.css                            # Estilos do dashboard
+│   │   └── globals.css                         # Estilos globais + variáveis CSS
+│   │
 │   ├── lib/
-│   │   ├── prisma.js                # Cliente Prisma
-│   │   └── validacoes.js            # Funções de validação
+│   │   ├── prisma.js                           # Cliente Prisma singleton
+│   │   └── validacoes.js                       # Funções de validação customizadas
+│   │
 │   ├── prisma/
-│   │   └── schema.prisma            # Schema do banco de dados
+│   │   └── schema.prisma                       # Schema do banco de dados
+│   │
 │   └── services/
-│       └── api.js                   # Serviços de API (axios)
-├── __tests__/                       # Testes
+│       └── api.js                              # Serviços de API (Axios)
+│   └── services/
+│       └── api.js                              # Serviços de API (Axios)
+│
+├── __tests__/                                  # Testes automatizados
 │   ├── api/
-│   │   └── expenses.test.js
+│   │   └── expenses.test.js                    # Testes de API
 │   └── components/
-│       └── ExpenseForm.test.jsx
-├── pages/                           # Legacy (mantido para compatibilidade)
-│   └── api/
-│       └── expenses/
-│           └── index.js
-├── public/                          # Arquivos estáticos
-├── jest.config.js                   # Configuração Jest
-├── jest.setup.js                    # Setup dos testes
-├── next.config.mjs                  # Configuração Next.js
-├── eslint.config.mjs                # Configuração ESLint
-├── package.json
-└── README.md
+│       └── ExpenseForm.test.jsx                # Testes de componentes
+│
+├── public/                                     # Arquivos estáticos
+│   └── LOGO_VittaCash.png                      # Logo da aplicação
+│
+├── .env                                        # Variáveis de ambiente (não commitar!)
+├── .env.example                                # Exemplo de variáveis
+├── .gitignore                                  # Arquivos ignorados
+├── eslint.config.mjs                           # Configuração ESLint
+├── jest.config.js                              # Configuração Jest
+├── jest.setup.js                               # Setup dos testes
+├── jsconfig.json                               # Configuração JavaScript
+├── next.config.mjs                             # Configuração Next.js
+├── package.json                                # Dependências e scripts
+├── LICENSE                                     # Licença do projeto
+└── README.md                                   # Este arquivo
 ```
+
+---
+
+## 🎨 Design e Identidade Visual
+
+### Paleta de Cores
+- **Verde Principal**: `#34d399` - Cor primária da marca
+- **Amarelo Secundário**: `#fbbf24` - Cor secundária para gradientes
+- **Verde Escuro**: `#1D361F` - Footer e elementos de contraste
+- **Vermelho Suave**: `#f87171` - Botão de exclusão
+- **Off-White**: `#f8f9fa` - Botões neutros
+
+### Gradientes
+- **Primário**: `linear-gradient(135deg, #34d399, #fbbf24)`
+- **Footer**: `linear-gradient(135deg, #1D361F 0%, #2d4a2f 100%)`
+- **Botões**: Gradientes suaves para ações principais
+
+### Responsividade
+- **Breakpoint Mobile**: 768px
+- **Design Mobile-First**: Otimizado para dispositivos móveis
+- **Grid Responsivo**: Cards e gráficos se adaptam ao tamanho da tela
+- **Menu Hamburguer**: Navegação otimizada para mobile
+- **Gráficos Adaptativos**: Dimensões e fontes ajustadas para mobile
 
 ---
 
 ## 🔌 API Routes
 
-### Autenticação
-- `POST /api/auth/signin` - Login com Google OAuth
+### 🔐 Autenticação
+- `POST /api/auth/signin` - Login com Google OAuth ou Credenciais
+- `POST /api/auth/signup` - Criar conta com email/senha
 - `POST /api/auth/signout` - Logout
 - `GET /api/auth/session` - Obter sessão atual
+- `POST /api/auth/verify-email` - Verificar email
+- `POST /api/auth/resend-verification` - Reenviar email de verificação
 
-### Despesas (CRUD)
-- `GET /api/expenses` - Listar despesas (com filtros: month, year, from, to, category)
+### 💵 Despesas (CRUD)
+- `GET /api/expenses` - Listar despesas do usuário
+  - Query params: `month`, `year`, `from`, `to`, `category`
+  - Exemplo: `/api/expenses?month=11&year=2025&category=Alimentação`
 - `POST /api/expenses` - Criar nova despesa
-- `GET /api/expenses/:id` - Buscar despesa por ID
-- `PUT /api/expenses/:id` - Atualizar despesa
+  - Body: `{ title, amount, date, category, recurring, recurrenceType, notes }`
+- `GET /api/expenses/:id` - Buscar despesa específica por ID
+- `PUT /api/expenses/:id` - Atualizar despesa existente
 - `DELETE /api/expenses/:id` - Excluir despesa
 
-### Relatórios e Exportação
+### 📊 Relatórios e Análises
 - `GET /api/expenses/report?type=monthly&year=2025&month=11` - Relatório mensal
+  - Retorna: total mensal, média diária, gastos por categoria, por dia
 - `GET /api/expenses/report?type=yearly&year=2025` - Relatório anual
-- `GET /api/expenses/export?month=11&year=2025` - Exportar CSV
-- `POST /api/expenses/import` - Importar CSV (multipart/form-data)
+  - Retorna: total anual, média mensal, gastos por categoria, por mês
 
-### Utilidades
+### 📥📤 Import/Export
+- `GET /api/expenses/export?month=11&year=2025` - Exportar despesas em CSV
+  - Formato: Data, Título, Valor, Categoria, Recorrente, Tipo, Notas
+- `POST /api/expenses/import` - Importar despesas via CSV
+  - Content-Type: `multipart/form-data`
+  - Campo: `file` (arquivo CSV)
+
+### 🏥 Utilidades
 - `GET /api/health` - Health check da aplicação
+  - Retorna: status da API, timestamp, versão
 
 ---
 
@@ -154,6 +294,7 @@ model User {
   name          String?
   email         String    @unique
   emailVerified DateTime?
+  password      String?   // Hash bcrypt (para autenticação por credenciais)
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -161,6 +302,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   expenses      Expense[]
+  
+  @@index([email])
 }
 ```
 
@@ -186,16 +329,71 @@ model Expense {
 }
 ```
 
+### Account (NextAuth)
+```prisma
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+```
+
+### Session (NextAuth)
+```prisma
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+```
+
+### VerificationToken (NextAuth)
+```prisma
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+```
+
 ---
 
 ## ⚙️ Setup Local
 
-### 1. Instalar dependências
+### Pré-requisitos
+- Node.js 18+ instalado
+- PostgreSQL (ou conta no Supabase)
+- Conta Google Cloud (para OAuth)
+
+### 1. Clonar o Repositório
+```bash
+git clone https://github.com/SaraahBR/Vitta-Cash.git
+cd vittacash
+```
+
+### 2. Instalar Dependências
 ```bash
 npm install
 ```
 
-### 2. Configurar variáveis de ambiente
+### 3. Configurar Variáveis de Ambiente
 
 Crie um arquivo `.env` na raiz do projeto:
 
@@ -204,11 +402,11 @@ Crie um arquivo `.env` na raiz do projeto:
 DATABASE_URL="postgresql://usuario:senha@host:5432/database?sslmode=require"
 DIRECT_URL="postgresql://usuario:senha@host:5432/database?sslmode=require"
 
-# NextAuth
+# NextAuth (gere secret com: openssl rand -base64 32)
 NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="sua-chave-secreta-aleatoria"
+NEXTAUTH_SECRET="sua-chave-secreta-aqui-use-openssl-rand"
 
-# Google OAuth
+# Google OAuth (obter em: https://console.cloud.google.com)
 GOOGLE_CLIENT_ID="seu-client-id.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="seu-client-secret"
 
@@ -216,26 +414,57 @@ GOOGLE_CLIENT_SECRET="seu-client-secret"
 NEXT_PUBLIC_API_URL="http://localhost:3000/api"
 ```
 
-### 3. Sincronizar banco de dados
+#### Como obter Google OAuth Credentials:
+1. Acesse [Google Cloud Console](https://console.cloud.google.com/)
+2. Crie um novo projeto
+3. Navegue para **APIs & Services > Credentials**
+4. Clique em **Create Credentials > OAuth 2.0 Client ID**
+5. Configure:
+   - **Application type**: Web application
+   - **Authorized JavaScript origins**: `http://localhost:3000`
+   - **Authorized redirect URIs**: `http://localhost:3000/api/auth/callback/google`
+6. Copie Client ID e Client Secret para o `.env`
+
+### 4. Configurar Banco de Dados
+
+Sincronizar schema Prisma com PostgreSQL:
+
 ```bash
 npm run prisma:push
 ```
 
-ou manualmente:
+Ou criar migrations (recomendado para produção):
+
 ```bash
-npx prisma db push --schema=./src/prisma/schema.prisma
+npm run prisma:migrate
 ```
 
-### 4. Iniciar desenvolvimento
+Abrir Prisma Studio para visualizar dados:
+
+```bash
+npm run prisma:studio
+```
+
+### 5. Iniciar Servidor de Desenvolvimento
 ```bash
 npm run dev
 ```
 
-Abrir: http://localhost:3000
+Abrir navegador em: **http://localhost:3000**
+
+### 6. Primeiro Acesso
+1. Clique em "Entrar"
+2. Escolha entre:
+   - Login com Google (OAuth)
+   - Criar conta com email/senha
+3. Se usar email/senha, verifique seu email
+4. Após login, será redirecionado para o Dashboard
 
 ---
 
 ## 🧪 Testes
+
+### Executar Testes
 
 ```bash
 # Rodar todos os testes
@@ -248,61 +477,107 @@ npm run test:watch
 npm run test:coverage
 ```
 
+### Cobertura Atual
+
+- **API Routes**: Testes de GET e POST para expenses
+- **Componentes**: Testes do ExpenseForm (renderização, validação, submit)
+- **Mocks**: NextAuth e Axios mockados para isolamento
+
+### Tecnologias de Teste
+
+- **Jest 29.7.0** - Framework de testes
+- **React Testing Library 16** - Testes de componentes React
+- **@testing-library/jest-dom** - Matchers customizados
+- **jest-environment-jsdom** - Ambiente DOM para React
+
 ---
 
-## � Scripts Disponíveis
+## 📝 Scripts Disponíveis
 
-```json
-{
-  "dev": "next dev",                          // Servidor desenvolvimento
-  "build": "next build",                      // Build produção
-  "start": "next start",                      // Servidor produção
-  "lint": "eslint . --ext .js,.jsx",         // Verificar código
-  "lint:fix": "eslint . --ext .js,.jsx --fix", // Corrigir código
-  "test": "jest",                            // Rodar testes
-  "test:watch": "jest --watch",              // Testes modo watch
-  "test:coverage": "jest --coverage",        // Cobertura de testes
-  "prisma:migrate": "prisma migrate dev --schema=./src/prisma/schema.prisma",
-  "prisma:studio": "prisma studio --schema=./src/prisma/schema.prisma",
-  "prisma:generate": "prisma generate --schema=./src/prisma/schema.prisma",
-  "prisma:push": "prisma db push --schema=./src/prisma/schema.prisma"
-}
-```
+| Script | Descrição |
+|--------|-----------|
+| `npm run dev` | Inicia servidor de desenvolvimento na porta 3000 |
+| `npm run build` | Gera build otimizado para produção |
+| `npm start` | Inicia servidor de produção (após build) |
+| `npm run lint` | Verifica código com ESLint |
+| `npm run lint:fix` | Corrige problemas de lint automaticamente |
+| `npm test` | Executa todos os testes com Jest |
+| `npm run test:watch` | Executa testes em modo watch (desenvolvimento) |
+| `npm run test:coverage` | Gera relatório de cobertura de testes |
+| `npm run prisma:migrate` | Cria e aplica nova migration do Prisma |
+| `npm run prisma:studio` | Abre Prisma Studio (GUI do banco de dados) |
+| `npm run prisma:generate` | Gera Prisma Client atualizado |
+| `npm run prisma:push` | Sincroniza schema com banco sem criar migration |
 
 ---
 
 ## 🧩 Componentes Principais
 
-### Componentes de UI
+### 🎨 Componentes de UI
 - **Header** - Cabeçalho com título e descrição
-- **Hero** - Seção hero da landing page
-- **Footer** - Rodapé da aplicação
-- **Navbar** - Barra de navegação principal
-- **Layout** - Layout wrapper global
+- **Hero** - Seção hero da landing page com CTA
+- **Footer** - Rodapé com gradiente verde escuro
+- **Navbar** - Barra de navegação responsiva com menu hamburguer
+- **Layout** - Layout wrapper global com providers
+- **LoadingScreen** - Tela de carregamento animada
 
-### Componentes de Autenticação
-- **AuthButton** - Botão de autenticação (login/logout)
+### 🔐 Componentes de Autenticação
+- **AuthButton** - Botão de autenticação inteligente (login/logout)
+- **AuthModal** - Modal de escolha entre Google e Email/Senha
 - **LoginButton** - Botão específico de login
+- **ProfileButton** - Botão de perfil do usuário
 - **SessionProvider** - Provider de sessão NextAuth
-- **AuthProvider** - Provider de autenticação customizado
+- **AuthProvider** - Provider de contexto de autenticação customizado
 
-### Componentes de Formulário
-- **ExpenseForm** - Formulário de criação/edição de despesas
+### 💵 Componentes de Despesas
+- **ExpenseForm** - Formulário completo de criação/edição de despesas
+  - Validação em tempo real
+  - Suporte a recorrência
+  - Campo de notas opcional
+  - Categorias predefinidas
+
+### 📊 Componentes de Visualização (Novo!)
+- **ReportsCharts** - Container de gráficos Recharts
+  - **PieChartCategories** - Gráfico de pizza para categorias
+    - Cores customizadas por categoria
+    - Tooltip com valores formatados
+    - Responsivo (mobile/desktop)
+  - **BarChartMonths** - Gráfico de barras mensal
+    - Evolução de gastos ao longo do ano
+    - Eixos formatados em reais (R$)
+    - Grid suave e legenda inferior
+    - Otimizado para mobile (fontes pequenas, barras finas)
 
 ---
 
 ## 🔐 Autenticação
 
-O projeto usa **NextAuth.js** com estratégia JWT e Google OAuth Provider:
+O projeto usa **NextAuth.js** com múltiplas estratégias de autenticação:
 
+### Providers Suportados
+1. **Google OAuth 2.0** - Login com conta Google
+2. **Credentials** - Login com email e senha
+
+### Configuração
 - **Adapter**: Prisma (persiste usuários no PostgreSQL)
-- **Strategy**: JWT (melhor performance)
-- **Provider**: Google OAuth 2.0
+- **Strategy**: JWT (melhor performance, stateless)
 - **Session**: 30 dias de duração
+- **Criptografia**: Bcrypt para senhas (10 rounds)
+- **Email Verification**: Sistema de verificação obrigatória
 
-### Callbacks customizados:
+### Features de Segurança
+- ✅ Hash de senhas com bcrypt
+- ✅ Tokens JWT assinados
+- ✅ Verificação de email obrigatória
+- ✅ Sistema de reenvio de verificação
+- ✅ Proteção contra SQL injection (Prisma)
+- ✅ Validação de dados server-side
+- ✅ CSRF protection automática (NextAuth)
+
+### Callbacks Customizados
 - Adiciona `userId` ao token JWT
-- Expõe `userId` na sessão do cliente
+- Expõe `userId` e `emailVerified` na sessão
+- Previne login sem verificação de email
 
 ---
 
@@ -329,273 +604,203 @@ sanitizarDadosDespesa(dados) // Limpa e sanitiza dados
 
 ## 🌐 Deploy
 
-### Recomendações:
-- **Frontend**: Vercel (otimizado para Next.js)
-- **Backend**: Incluído no Next.js (API Routes)
-- **Banco de dados**: Supabase PostgreSQL
+### Plataformas Recomendadas
 
-### Variáveis de ambiente necessárias em produção:
-```env
-DATABASE_URL
-DIRECT_URL
-NEXTAUTH_URL
-NEXTAUTH_SECRET
-GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET
+#### Opção 1: Vercel (Recomendado)
+- **Frontend + Backend**: Deploy automático do Next.js
+- **Banco de dados**: Supabase PostgreSQL
+- **Vantagens**: 
+  - Deploy automático via Git
+  - Edge Functions
+  - Preview deployments
+  - Zero config
+
+#### Opção 2: Railway
+- **Full-stack**: Next.js + PostgreSQL integrado
+- **Vantagens**: 
+  - Banco de dados incluído
+  - Simples configuração
+
+#### Opção 3: Netlify
+- **Frontend**: Next.js
+- **Banco de dados**: Supabase externo
+
+### Configuração do Deploy
+
+#### 1. Preparar Aplicação
+```bash
+npm run build
+npm start
 ```
+
+#### 2. Variáveis de Ambiente em Produção
+Configure estas variáveis no painel do Vercel/Railway:
+
+```env
+# Database (Supabase)
+DATABASE_URL="postgresql://user:password@host.supabase.co:5432/postgres"
+DIRECT_URL="postgresql://user:password@host.supabase.co:5432/postgres"
+
+# NextAuth (gere novo secret para produção!)
+NEXTAUTH_URL="https://seu-dominio.vercel.app"
+NEXTAUTH_SECRET="secret-diferente-do-dev-mais-seguro"
+
+# Google OAuth (crie credenciais de produção)
+GOOGLE_CLIENT_ID="seu-client-id-producao.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="seu-secret-producao"
+
+# API
+NEXT_PUBLIC_API_URL="https://seu-dominio.vercel.app/api"
+```
+
+#### 3. Configurar Google OAuth para Produção
+1. No Google Cloud Console, adicione URLs de produção:
+   - **Authorized JavaScript origins**: `https://seu-dominio.vercel.app`
+   - **Authorized redirect URIs**: `https://seu-dominio.vercel.app/api/auth/callback/google`
+
+#### 4. Aplicar Migrations no Banco de Produção
+```bash
+# Localmente, apontando para produção
+DATABASE_URL="sua-url-producao" npm run prisma:migrate
+```
+
+### Checklist de Deploy
+- [ ] Build local funciona (`npm run build`)
+- [ ] Variáveis de ambiente configuradas
+- [ ] Google OAuth com URLs de produção
+- [ ] Migrations aplicadas no banco
+- [ ] NEXTAUTH_SECRET diferente do dev
+- [ ] NEXTAUTH_URL aponta para produção
+
+---
+
+## � Funcionalidades Detalhadas
+
+### Dashboard Principal
+- **Cards Informativos**:
+  - Total de gastos do mês atual
+  - Total de gastos do ano atual
+  - Média de gastos mensais
+- **Gráfico de Pizza (Categorias)**:
+  - Visualização de despesas por categoria do mês
+  - Cores personalizadas para cada categoria
+  - Tooltip com valores em R$
+  - Responsivo para mobile e desktop
+- **Gráfico de Barras (Meses)**:
+  - Evolução de gastos ao longo do ano
+  - 12 barras representando cada mês
+  - Eixo Y em formato de reais (R$)
+  - Grid suave para melhor leitura
+- **Lista de Despesas Recentes**:
+  - Últimas despesas cadastradas
+  - Filtro por mês e ano
+
+### Página de Despesas
+- **Listagem Completa**:
+  - Todas as despesas do usuário
+  - Filtros por mês, ano e categoria
+  - Ordenação por data
+  - Ações: Editar e Excluir
+- **Criar Nova Despesa**:
+  - Formulário completo com validação
+  - Categorias predefinidas
+  - Suporte a recorrência
+  - Campo de notas opcional
+- **Editar Despesa**:
+  - Formulário pré-preenchido
+  - Validação em tempo real
+  - Atualização instantânea
+
+### Página de Relatórios
+- **Filtros Customizáveis**:
+  - Por mês específico
+  - Por ano completo
+  - Por categoria
+  - Por período (de/até)
+- **Estatísticas**:
+  - Total de gastos
+  - Média de gastos
+  - Maior e menor despesa
+- **Exportação CSV**:
+  - Download de relatórios
+  - Formato compatível com Excel
+  - Importação de volta para o sistema
+
+### Autenticação
+- **Login com Google**: Um clique para entrar
+- **Login com Email/Senha**: 
+  - Cadastro com verificação de email
+  - Sistema de reenvio de email
+  - Senha criptografada com bcrypt
+- **Proteção de Rotas**: Apenas usuários autenticados acessam funcionalidades
+
+---
+
+## 🎯 Roadmap Futuro
+
+### Em Consideração
+- [ ] Múltiplas contas bancárias
+- [ ] Orçamentos e metas
+- [ ] Notificações de gastos
+- [ ] Modo escuro
+- [ ] Exportação em PDF
+- [ ] Compartilhamento de despesas (grupos)
+- [ ] App mobile (React Native)
+- [ ] Integração com bancos (Open Banking)
+- [ ] Machine Learning para predição de gastos
+- [ ] Categorização automática com IA
+
+---
+
+## 🤝 Contribuindo
+
+Este é um projeto educacional, mas contribuições são bem-vindas!
+
+### Como Contribuir
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/NovaFeature`)
+3. Commit suas mudanças (`git commit -m 'Add: Nova feature incrível'`)
+4. Push para a branch (`git push origin feature/NovaFeature`)
+5. Abra um Pull Request
+
+### Padrões de Código
+- Use ESLint e Prettier
+- Escreva testes para novas features
+- Documente mudanças significativas
+- Siga convenções de commits semânticos
 
 ---
 
 ## 👤 Desenvolvido por
 
-**Sarah Hernandes**
+**Sarah Hernandes**  
+[GitHub](https://github.com/SaraahBR) | [LinkedIn](https://www.linkedin.com/in/sarahernandes)
 
 ---
 
 ## 📄 Licença
 
-Este projeto é privado e foi desenvolvido para fins educacionais.
-- **Lint**: ESLint + Prettier
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## 📦 Pré-requisitos
+---
 
-- Node.js 18+ 
-- npm ou yarn
-- Conta Google (para OAuth)
-- PostgreSQL (opcional, SQLite funciona para desenvolvimento)
+## 🙏 Agradecimentos
 
-## 🔧 Instalação
+- **Next.js Team** - Framework incrível
+- **Vercel** - Plataforma de deploy
+- **Prisma** - ORM fantástico
+- **NextAuth.js** - Autenticação simplificada
+- **Recharts** - Biblioteca de gráficos
+- **Supabase** - PostgreSQL gerenciado
+- **Comunidade Open Source** - Por todas as bibliotecas utilizadas
 
-### 1. Instale as dependências
+---
 
-```bash
-npm install
-```
+<p align="center">
+  <strong>VittaCash</strong> - Controle seus gastos com inteligência 💰📊
+</p>
 
-### 2. Configure variáveis de ambiente
+<p align="center">
+  Feito com ❤️ e ☕ por Sarah Hernandes
+</p>
 
-Copie o arquivo `.env.example` para `.env`:
-
-```bash
-cp .env.example .env
-```
-
-Edite o arquivo `.env` com suas credenciais:
-
-```env
-# Database (SQLite para dev)
-DATABASE_URL="file:./dev.db"
-
-# NextAuth
-NEXTAUTH_SECRET="gere-um-secret-aqui"  # Use o comando abaixo para gerar
-NEXTAUTH_URL="http://localhost:3000"
-
-# Google OAuth (veja instruções abaixo)
-GOOGLE_CLIENT_ID="seu-client-id.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET="seu-client-secret"
-```
-
-Para gerar o `NEXTAUTH_SECRET`:
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
-```
-
-### 3. Configure Google OAuth
-
-1. Acesse [Google Cloud Console](https://console.cloud.google.com/)
-2. Crie um novo projeto ou selecione um existente
-3. Navegue para **APIs & Services > Credentials**
-4. Clique em **Create Credentials > OAuth 2.0 Client ID**
-5. Configure:
-   - Application type: **Web application**
-   - Authorized JavaScript origins: `http://localhost:3000`
-   - Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google`
-6. Copie o **Client ID** e **Client Secret** para o `.env`
-
-### 4. Configure o banco de dados
-
-Execute as migrations do Prisma:
-
-```bash
-npx prisma migrate dev --name init
-```
-
-Ou, se usar SQLite em desenvolvimento:
-
-```bash
-npx prisma db push
-```
-
-### 5. Execute o projeto
-
-```bash
-npm run dev
-```
-
-Acesse: [http://localhost:3000](http://localhost:3000)
-
-## 📚 Scripts disponíveis
-
-```bash
-npm run dev          # Inicia servidor de desenvolvimento
-npm run build        # Build para produção
-npm run start        # Inicia servidor de produção
-npm run lint         # Executa ESLint
-npm run lint:fix     # Corrige problemas de lint automaticamente
-npm test             # Executa testes
-npm run test:watch   # Executa testes em modo watch
-npm run test:coverage # Gera relatório de cobertura
-npm run prisma:migrate # Executa migrations
-npm run prisma:studio  # Abre Prisma Studio (GUI do banco)
-```
-
-## 🏗️ Estrutura do Projeto
-
-```
-vittacash/
-├── pages/
-│   ├── api/
-│   │   ├── auth/
-│   │   │   └── [...nextauth].js      # Configuração NextAuth
-│   │   ├── expenses/
-│   │   │   ├── index.js              # GET/POST despesas
-│   │   │   ├── [id].js               # GET/PUT/DELETE despesa
-│   │   │   ├── report.js             # Relatórios
-│   │   │   ├── export.js             # Exportar CSV
-│   │   │   └── import.js             # Importar CSV
-│   │   └── health.js                 # Health check
-│   ├── expenses/
-│   │   ├── index.jsx                 # Listagem
-│   │   ├── new.jsx                   # Criar
-│   │   └── [id].jsx                  # Editar
-│   ├── reports/
-│   │   └── index.jsx                 # Relatórios
-│   ├── _app.js                       # App wrapper
-│   └── index.jsx                     # Dashboard
-├── src/app/
-│   ├── components/
-│   │   ├── authButton/
-│   │   │   ├── AuthButton.jsx
-│   │   │   └── AuthButton.module.css
-│   │   └── expenseForm/
-│   │       ├── ExpenseForm.jsx
-│   │       └── ExpenseForm.module.css
-│   └── globals.css
-├── lib/
-│   ├── prisma.js                     # Cliente Prisma
-│   └── validacoes.js                 # Validações
-├── services/
-│   └── api.js                        # Cliente API (axios)
-├── prisma/
-│   └── schema.prisma                 # Schema do banco
-├── __tests__/
-│   ├── api/
-│   │   └── expenses.test.js
-│   └── components/
-│       └── ExpenseForm.test.jsx
-├── .env.example
-├── jest.config.js
-├── jest.setup.js
-├── package.json
-└── README.md
-```
-
-## 🔐 Segurança
-
-### Práticas Implementadas
-
-1. **Autenticação obrigatória**: Todas as rotas de API verificam sessão
-2. **Verificação de propriedade**: Usuários só podem acessar suas próprias despesas
-3. **Queries parametrizadas**: Prisma previne SQL injection automaticamente
-4. **Validação server-side**: Todas as entradas são validadas no servidor
-5. **Secrets não commitados**: `.env` está no `.gitignore`
-6. **CSRF Protection**: NextAuth.js gerencia automaticamente
-7. **No logging de secrets**: Tokens nunca são logados
-
-### Variáveis de Ambiente Sensíveis
-
-⚠️ **NUNCA** commite o arquivo `.env` para o Git!
-
-## 🧪 Testes
-
-### Executar testes
-
-```bash
-npm test
-```
-
-### Cobertura de testes
-
-```bash
-npm run test:coverage
-```
-
-### Estrutura de testes
-
-- **API Tests**: `/api/expenses` (GET, POST)
-- **Component Tests**: `ExpenseForm` (renderização, validação, submit)
-
-## 📝 API Endpoints
-
-### Autenticação
-
-- `GET /api/auth/signin` - Página de login
-- `GET /api/auth/signout` - Logout
-- `GET /api/auth/session` - Obter sessão atual
-
-### Despesas
-
-- `GET /api/expenses?month=MM&year=YYYY` - Listar despesas
-- `POST /api/expenses` - Criar despesa
-- `GET /api/expenses/:id` - Obter despesa
-- `PUT /api/expenses/:id` - Atualizar despesa
-- `DELETE /api/expenses/:id` - Deletar despesa
-
-### Relatórios
-
-- `GET /api/expenses/report?type=monthly&year=2025&month=11` - Relatório mensal
-- `GET /api/expenses/report?type=yearly&year=2025` - Relatório anual
-
-### Import/Export
-
-- `GET /api/expenses/export?month=MM&year=YYYY` - Exportar CSV
-- `POST /api/expenses/import` - Importar CSV
-
-## 🎨 ESLint e Prettier
-
-### Configuração Recomendada
-
-Instale as dependências:
-
-```bash
-npm install --save-dev eslint-config-prettier eslint-plugin-prettier prettier
-```
-
-### Arquivo `.prettierrc`
-
-```json
-{
-  "semi": true,
-  "singleQuote": true,
-  "tabWidth": 2,
-  "trailingComma": "es5",
-  "printWidth": 100
-}
-```
-
-## 🐛 Troubleshooting
-
-### Erro: "Prisma Client is not generated"
-
-```bash
-npx prisma generate
-```
-
-### Erro de autenticação Google
-
-1. Verifique se as URLs de redirect estão corretas no Google Console
-2. Confirme que `NEXTAUTH_URL` está correto no `.env`
-3. Certifique-se de que `NEXTAUTH_SECRET` está definido
-
-
-**VittaCash** - Controle seus gastos com inteligência 💰

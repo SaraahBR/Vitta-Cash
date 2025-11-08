@@ -4,13 +4,35 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+  /* Fundo TOTALMENTE opaco com blur EXTREMO */
+  background: rgba(245, 245, 245, 0.995); /* 99.5% opaco - praticamente sólido */
+  backdrop-filter: blur(100px) saturate(200%) brightness(1.1);
+  -webkit-backdrop-filter: blur(100px) saturate(200%) brightness(1.1);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  animation: gradientShift 3s ease infinite;
-  background-size: 200% 200%;
+}
+
+/* Camada adicional de blur para garantir que nada fique visível */
+.loading-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(250, 250, 250, 0.9);
+  backdrop-filter: blur(80px);
+  -webkit-backdrop-filter: blur(80px);
+  z-index: -1;
+}
+
+/* Fallback para navegadores que não suportam backdrop-filter */
+@supports not (backdrop-filter: blur(100px)) {
+  .loading-screen {
+    background: rgb(245, 245, 245); /* Fundo 100% sólido como fallback */
+  }
 }
 
 @keyframes gradientShift {
@@ -27,8 +49,11 @@
 
 .loading-content {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem;
   max-width: 400px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .loading-logo {
@@ -60,11 +85,10 @@
 }
 
 .loading-title {
-  color: white;
+  color: #1f2937;
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 2rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   animation: fadeInOut 2s ease-in-out infinite;
 }
 
@@ -80,21 +104,26 @@
 .loading-bar-container {
   width: 100%;
   height: 8px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .loading-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #fff, #e0f2fe, #fff);
+  /* Gradiente com cores da logo: verde claro → amarelo → verde claro */
+  background: linear-gradient(90deg, 
+    #34d399 0%,      /* Verde claro */
+    #fbbf24 50%,     /* Amarelo */
+    #34d399 100%     /* Volta ao verde */
+  );
   background-size: 200% 100%;
   border-radius: 10px;
   transition: width 0.3s ease;
   animation: shimmer 1.5s linear infinite;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
 }
 
 @keyframes shimmer {
@@ -107,11 +136,10 @@
 }
 
 .loading-percentage {
-  color: white;
+  color: #4b5563;
   font-size: 1.25rem;
   font-weight: 700;
   margin-top: 1rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   font-variant-numeric: tabular-nums;
 }
 

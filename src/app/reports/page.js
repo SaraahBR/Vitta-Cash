@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Layout from '../components/layout/Layout';
 import Header from '../components/header/Header';
+import LoadingScreen from '../components/loading/LoadingScreen';
 import { authService, obterRelatorio } from '../../services/api';
 import './reports.css';
 
@@ -38,14 +39,62 @@ export default function ReportsPage() {
     }
   };
 
+  const exportarCSV = () => {
+    if (!relatorio) return;
+
+    let csvContent = '';
+    
+    if (tipo === 'yearly') {
+      csvContent = 'Relatório Anual,' + ano + '\n\n';
+      csvContent += 'Total Gasto no Ano,R$ ' + relatorio.totalGeral.toFixed(2) + '\n';
+      
+      if (relatorio.meses && relatorio.meses.length > 0) {
+        const totalAnual = relatorio.totalGeral;
+        const mediaAnual = totalAnual / 12;
+        csvContent += 'Média Mensal,R$ ' + mediaAnual.toFixed(2) + '\n\n';
+        
+        csvContent += 'Mês,Valor\n';
+        relatorio.meses.forEach((m) => {
+          csvContent += `${m.mes},R$ ${m.total.toFixed(2)}\n`;
+        });
+      }
+    } else {
+      csvContent = 'Relatório Mensal,' + mes + '/' + ano + '\n\n';
+      csvContent += 'Total Gasto,R$ ' + relatorio.totalGeral.toFixed(2) + '\n\n';
+      
+      if (relatorio.categorias) {
+        csvContent += 'Categoria,Valor\n';
+        relatorio.categorias.forEach((cat) => {
+          csvContent += `${cat.categoria},R$ ${cat.total.toFixed(2)}\n`;
+        });
+      }
+    }
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `relatorio_${tipo}_${ano}${tipo === 'monthly' ? '_' + mes : ''}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const calcularEstatisticasAnuais = () => {
+    if (!relatorio || tipo !== 'yearly') return null;
+    
+    const totalAnual = relatorio.totalGeral;
+    const mediaAnual = totalAnual / 12;
+    
+    return {
+      totalAnual,
+      mediaAnual
+    };
+  };
+
   if (!autenticado) {
-    return (
-      <Layout>
-        <div className="reports-container">
-          <p>Carregando...</p>
-        </div>
-      </Layout>
-    );
+    return <LoadingScreen message="Preparando relatórios..." />;
   }
 
   return (
@@ -98,25 +147,54 @@ export default function ReportsPage() {
             )}
           </div>
 
-          <button onClick={carregarRelatorio} className="reports-btn">
-            Gerar Relatório
-          </button>
+          <div className="reports-filtros-buttons">
+            <button onClick={carregarRelatorio} className="reports-btn">
+              Gerar Relatório
+            </button>
+            {relatorio && (
+              <button onClick={exportarCSV} className="reports-btn reports-btn-export">
+                📊 Exportar CSV
+              </button>
+            )}
+          </div>
         </div>
 
-        {carregando ? (
-          <p>Carregando relatório...</p>
-        ) : relatorio ? (
+        {carregando && <LoadingScreen message="Gerando relatório..." />}
+        
+        {!carregando && relatorio ? (
           <div className="reports-resultado">
-            <div className="reports-total">
-              <p className="reports-total-label">Total Gasto</p>
-              <p className="reports-total-valor">
-                R$ {relatorio.totalGeral.toFixed(2)}
-              </p>
-              <p className="reports-total-periodo">
-                {tipo === 'monthly'
-                  ? `${mes}/${ano}`
-                  : `Ano ${ano}`}
-              </p>
+            <div className="reports-cards-grid">
+              <div className="reports-total">
+                <p className="reports-total-label">Total Gasto</p>
+                <p className="reports-total-valor">
+                  R$ {relatorio.totalGeral.toFixed(2)}
+                </p>
+                <p className="reports-total-periodo">
+                  {tipo === 'monthly'
+                    ? `${mes}/${ano}`
+                    : `Ano ${ano}`}
+                </p>
+              </div>
+
+              {tipo === 'yearly' && calcularEstatisticasAnuais() && (
+                <>
+                  <div className="reports-total">
+                    <p className="reports-total-label">Total no Ano</p>
+                    <p className="reports-total-valor">
+                      R$ {calcularEstatisticasAnuais().totalAnual.toFixed(2)}
+                    </p>
+                    <p className="reports-total-periodo">Ano {ano}</p>
+                  </div>
+
+                  <div className="reports-total">
+                    <p className="reports-total-label">Média Mensal</p>
+                    <p className="reports-total-valor">
+                      R$ {calcularEstatisticasAnuais().mediaAnual.toFixed(2)}
+                    </p>
+                    <p className="reports-total-periodo">Ano {ano}</p>
+                  </div>
+                </>
+              )}
             </div>
 
             {tipo === 'monthly' && relatorio.categorias && (

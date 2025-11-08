@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '../components/layout/Layout';
 import Header from '../components/header/Header';
+import LoadingScreen from '../components/loading/LoadingScreen';
 import { authService, listarDespesas, excluirDespesa } from '../../services/api';
+import { formatarData } from '../../lib/formatadores';
 import './expenses.css';
 
 export default function ExpensesPage() {
@@ -27,14 +29,19 @@ export default function ExpensesPage() {
       if (!isAuth) {
         router.push('/');
       } else {
-        carregarDespesas();
+        // Debounce: aguarda 300ms após mudança de filtro antes de buscar
+        const timeoutId = setTimeout(() => {
+          carregarDespesas();
+        }, 300);
+        
+        return () => clearTimeout(timeoutId);
       }
     };
 
-    verificarAuth();
+    return verificarAuth();
   }, [filtros]);
 
-  const carregarDespesas = async () => {
+  const carregarDespesas = useCallback(async () => {
     try {
       setCarregando(true);
       
@@ -46,7 +53,7 @@ export default function ExpensesPage() {
     } finally {
       setCarregando(false);
     }
-  };
+  }, [filtros]);
 
   const handleExcluir = async (id) => {
     if (confirm('Tem certeza que deseja excluir esta despesa?')) {
@@ -75,14 +82,8 @@ export default function ExpensesPage() {
     });
   };
 
-  if (!autenticado) {
-    return (
-      <Layout>
-        <div className="expenses-container">
-          <p>Carregando...</p>
-        </div>
-      </Layout>
-    );
+  if (!autenticado || carregando) {
+    return <LoadingScreen message="Carregando despesas..." />;
   }
 
   return (
@@ -150,29 +151,32 @@ export default function ExpensesPage() {
           <div className="expenses-filtros-actions">
             <button
               onClick={limparFiltros}
-              className="expenses-btn expenses-btn-secondary"
+              className="expenses-btn expenses-btn-clear"
             >
               Limpar Filtros
             </button>
           </div>
         </div>
 
-        {carregando ? (
-          <p>Carregando despesas...</p>
-        ) : despesas.length > 0 ? (
+        {despesas.length > 0 ? (
           <div className="expenses-lista">
             {despesas.map((despesa) => (
               <div key={despesa.id} className="expenses-card">
                 <div className="expenses-card-info">
-                  <h3 className="expenses-card-titulo">{despesa.titulo}</h3>
+                  <h3 className="expenses-card-titulo">
+                    {despesa.descricao || despesa.titulo || despesa.title || 'Sem título'}
+                  </h3>
                   <div className="expenses-card-detalhes">
-                    <span>📅 {new Date(despesa.data).toLocaleDateString('pt-BR')}</span>
-                    <span>📁 {despesa.categoria}</span>
-                    {despesa.recorrente && <span>🔄 Recorrente</span>}
+                    <span>📅 {formatarData(despesa.date || despesa.data)}</span>
+                    <span>📁 {despesa.category || despesa.categoria}</span>
+                    {(despesa.recurring || despesa.recorrente) && <span>🔄 Recorrente</span>}
                   </div>
                 </div>
                 <span className="expenses-card-valor">
-                  R$ {despesa.valor.toFixed(2)}
+                  {new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  }).format(despesa.amount || despesa.valor)}
                 </span>
                 <div className="expenses-card-actions">
                   <Link
