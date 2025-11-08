@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  Desenvolvido com Next.js 16, NextAuth.js, Prisma, PostgreSQL e Recharts
+  Desenvolvido com Next.js 16, React, NextAuth.js, Prisma, PostgreSQL e Recharts
 </p>
 
 ---
