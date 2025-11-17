@@ -32,7 +32,13 @@ export default function LoginPage() {
     setErro(null);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+      // URL do backend Node.js/Express (Render)
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://vittacash.onrender.com';
+      const url = `${backendUrl}/api/auth/login`;
+      
+      console.log('📤 Fazendo login em:', url);
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +72,13 @@ export default function LoginPage() {
       setLoading(true);
       setErro(null);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+      // URL do backend Node.js/Express (Render) para login Google
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://vittacash.onrender.com';
+      const url = `${backendUrl}/api/auth/login-google`;
+      
+      console.log('📤 Fazendo login Google em:', url);
+
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

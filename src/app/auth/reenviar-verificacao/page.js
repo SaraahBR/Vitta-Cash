@@ -16,13 +16,17 @@ export default function ReenviarVerificacaoPage() {
     setErro(null);
 
     try {
-      console.log('📤 Reenviando verificação para:', `${process.env.NEXT_PUBLIC_API_URL}/auth/reenviar-verificacao`);
+      // URL do backend Node.js/Express (Render)
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://vittacash.onrender.com';
+      const url = `${backendUrl}/api/auth/reenviar-verificacao`;
+      
+      console.log('📤 Reenviando verificação para:', url);
       console.log('📦 E-mail:', email);
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 segundos
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/reenviar-verificacao`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

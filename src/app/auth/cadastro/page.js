@@ -30,14 +30,25 @@ export default function CadastroPage() {
     setLoading(true);
     setErro(null);
 
+    // Validar senhas iguais
+    if (formData.senha !== formData.confirmarSenha) {
+      setErro('As senhas não coincidem');
+      setLoading(false);
+      return;
+    }
+
     try {
-      console.log('📤 Enviando cadastro para:', `${process.env.NEXT_PUBLIC_API_URL}/auth/cadastrar`);
-      console.log('📦 Dados:', formData);
+      // URL do backend Node.js/Express (Render)
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://vittacash.onrender.com';
+      const url = `${backendUrl}/api/auth/cadastrar`;
+      
+      console.log('📤 Enviando cadastro para:', url);
+      console.log('📦 Dados:', { nome: formData.nome, email: formData.email });
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 segundos (envio de e-mail pode demorar)
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/cadastrar`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

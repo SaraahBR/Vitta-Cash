@@ -23,11 +23,16 @@ function VerificarEmailContent() {
       }
 
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/verificar-email?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
-        );
+        // URL do backend Node.js/Express (Render)
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://vittacash.onrender.com';
+        const url = `${backendUrl}/api/auth/verificar-email?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+        
+        console.log('📤 Verificando email em:', url);
+        
+        const response = await fetch(url);
 
         const data = await response.json();
+        console.log('📥 Resposta:', data);
 
         if (!response.ok) {
           throw new Error(data.error || 'Erro ao verificar e-mail');
