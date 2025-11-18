@@ -256,6 +256,9 @@ vittacash/
 - `POST /api/auth/verify-email` - Verificar email
 - `POST /api/auth/resend-verification` - Reenviar email de verificação
 
+> 📧 **Sistema de E-mails:** O backend usa **Brevo** (ex-Sendinblue) para envio de e-mails de verificação.  
+> Para mais detalhes sobre o fluxo de e-mails, troubleshooting e testes, consulte: [`docs/EMAIL_SYSTEM.md`](docs/EMAIL_SYSTEM.md)
+
 ### 💵 Despesas (CRUD)
 - `GET /api/expenses` - Listar despesas do usuário
   - Query params: `month`, `year`, `from`, `to`, `category`

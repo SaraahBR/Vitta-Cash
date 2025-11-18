@@ -1,4 +1,6 @@
 import AuthProvider from './components/authProvider/AuthProvider';
+import { AuthProvider as AuthModalProvider } from '@/contexts/AuthContext';
+import AuthModalWrapper from './components/authModalWrapper/AuthModalWrapper';
 import './globals.css';
 
 export const metadata = {
@@ -13,7 +15,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <AuthModalProvider>
+            {children}
+            <AuthModalWrapper />
+          </AuthModalProvider>
+        </AuthProvider>
       </body>
     </html>
   );

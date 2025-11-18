@@ -1,9 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import './hero.css';
 
 export default function Hero() {
   const [isPaused, setIsPaused] = useState(false);
+  const { abrirCadastro } = useAuth();
 
   const features = [
     {
@@ -87,9 +89,9 @@ export default function Hero() {
           </p>
           
           <div className="hero-ctas">
-            <a href="/auth/cadastro" className="hero-cta-primario">
+            <button onClick={abrirCadastro} className="hero-cta-primario">
               Começar Agora
-            </a>
+            </button>
             <a href="#recursos" className="hero-cta-secundario">
               Conheça Mais
             </a>

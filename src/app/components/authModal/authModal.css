@@ -230,6 +230,43 @@
   color: #9ca3af;
 }
 
+/* Password Input Wrapper */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  padding-right: 3rem;
+  width: 100%;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+}
+
+.password-toggle-btn:hover {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.password-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
 /* Submit Button */
 .auth-submit-btn {
   padding: 1rem 2rem;
@@ -278,6 +315,13 @@
 
 /* Google Container */
 .auth-google-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.auth-google-container > div {
+  width: 100% !important;
   display: flex;
   justify-content: center;
 }

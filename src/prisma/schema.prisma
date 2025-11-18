@@ -17,6 +17,7 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  password      String?   // Para login com email/senha
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
