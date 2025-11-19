@@ -14,10 +14,12 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
     setError(null);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
       
       if (!token) {
-        throw new Error('Você precisa estar logado para enviar relatórios');
+        setError('Você precisa estar logado para enviar relatórios');
+        setLoading(false);
+        return;
       }
 
       // Construir URL com parâmetros
@@ -30,20 +32,27 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
         params.append('month', month.toString());
       }
 
+      console.log('Enviando relatório com token:', token ? 'Token presente' : 'Token ausente');
+      console.log('URL:', `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/send-report?${params}`);
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/send-report?${params}`,
         {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
         }
       );
 
+      console.log('Status da resposta:', response.status);
+
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Erro ao enviar relatório');
+        console.error('Erro na resposta:', data);
+        throw new Error(data.error || data.message || 'Erro ao enviar relatório');
       }
 
       setMessage(`Relatório enviado com sucesso para ${data.email}!`);
