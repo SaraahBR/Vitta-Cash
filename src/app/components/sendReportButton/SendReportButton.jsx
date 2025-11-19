@@ -15,12 +15,6 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
 
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-      
-      if (!token) {
-        setError('Você precisa estar logado para enviar relatórios');
-        setLoading(false);
-        return;
-      }
 
       // Construir URL com parâmetros
       const params = new URLSearchParams({
@@ -32,8 +26,8 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
         params.append('month', month.toString());
       }
 
-      console.log('Enviando relatório com token:', token ? 'Token presente' : 'Token ausente');
-      console.log('URL:', `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/send-report?${params}`);
+      console.log('🔑 Token:', token ? `${token.substring(0, 20)}...` : 'AUSENTE');
+      console.log('📧 URL:', `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/send-report?${params.toString()}`);
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/send-report?${params}`,
@@ -46,12 +40,14 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
         }
       );
 
-      console.log('Status da resposta:', response.status);
+      console.log('📊 Status:', response.status);
+      console.log('📝 Headers:', Object.fromEntries(response.headers.entries()));
 
       const data = await response.json();
+      console.log('📦 Response:', data);
 
       if (!response.ok) {
-        console.error('Erro na resposta:', data);
+        console.error('❌ Erro:', data);
         throw new Error(data.error || data.message || 'Erro ao enviar relatório');
       }
 
