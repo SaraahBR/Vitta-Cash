@@ -6,9 +6,9 @@ const TOKEN_KEY = 'vittacash_token';
 const USER_KEY = 'vittacash_user';
 
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://vittacash.onrender.com/api',
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'https://vittacash.onrender.com',
   headers: { 'Content-Type': 'application/json' },
-  timeout: 60000,
+  timeout: 120000, // 2 minutos para permitir cold start do Render
 });
 
 export const authService = {
