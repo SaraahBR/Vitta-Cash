@@ -14,7 +14,7 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
     setError(null);
 
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+      const token = typeof window !== 'undefined' ? localStorage.getItem('vittacash_token') : null;
 
       // Construir URL com parâmetros
       const params = new URLSearchParams({
