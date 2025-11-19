@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Layout from '../components/layout/Layout';
 import Header from '../components/header/Header';
 import LoadingScreen from '../components/loading/LoadingScreen';
+import SendReportButton from '../components/sendReportButton/SendReportButton';
 import { authService, obterRelatorio } from '../../services/api';
 import './reports.css';
 
@@ -152,9 +153,16 @@ export default function ReportsPage() {
               Gerar Relatório
             </button>
             {relatorio && (
-              <button onClick={exportarCSV} className="reports-btn reports-btn-export">
-                📊 Exportar CSV
-              </button>
+              <>
+                <button onClick={exportarCSV} className="reports-btn reports-btn-export">
+                  📊 Exportar CSV
+                </button>
+                <SendReportButton 
+                  type={tipo} 
+                  year={ano} 
+                  month={tipo === 'monthly' ? mes : null} 
+                />
+              </>
             )}
           </div>
         </div>

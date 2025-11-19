@@ -39,6 +39,11 @@
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.reports-filtros-buttons > * {
+  flex: 0 1 auto;
 }
 
 .reports-btn {

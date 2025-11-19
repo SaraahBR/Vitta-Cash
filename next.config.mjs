@@ -10,6 +10,10 @@ const nextConfig = {
       },
     ],
   },
+  // Suprimir warnings de preload do Next.js 16
+  experimental: {
+    optimizePackageImports: ['@react-oauth/google'],
+  },
 };
 
 export default nextConfig;
