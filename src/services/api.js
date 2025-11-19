@@ -14,7 +14,7 @@ const apiClient = axios.create({
 export const authService = {
   login: async (googleIdToken) => {
     
-    const response = await apiClient.post('/auth/login/google', { tokenGoogle: googleIdToken });
+    const response = await apiClient.post('/api/auth/login/google', { tokenGoogle: googleIdToken });
     const { token, usuario } = response.data;
     if (typeof window !== 'undefined') {
       localStorage.setItem(TOKEN_KEY, token);
