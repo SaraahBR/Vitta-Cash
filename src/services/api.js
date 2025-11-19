@@ -94,7 +94,7 @@ export const listarDespesas = async (filtros = {}) => {
       if (filtros.category) params.append('category', filtros.category);
       if (filtros.from) params.append('from', filtros.from);
       if (filtros.to) params.append('to', filtros.to);
-      const response = await apiClient.get(`/expenses?${params.toString()}`);
+      const response = await apiClient.get(`/api/expenses?${params.toString()}`);
       return response.data;
     },
     TTL.DESPESAS,
@@ -103,7 +103,7 @@ export const listarDespesas = async (filtros = {}) => {
 };
 
 export const criarDespesa = async (dados) => {
-  const response = await apiClient.post('/expenses', dados);
+  const response = await apiClient.post('/api/expenses', dados);
   // Invalida cache de despesas e relatórios após criar (memória + localStorage)
   cacheGlobal.invalidarPorPrefixo('despesas');
   cacheGlobal.invalidarPorPrefixo('relatorio');
@@ -118,7 +118,7 @@ export const obterDespesa = async (id) => {
   return buscarComCacheHibrido(
     chaveCache,
     async () => {
-      const response = await apiClient.get(`/expenses/${id}`);
+      const response = await apiClient.get(`/api/expenses/${id}`);
       return response.data;
     },
     TTL.DESPESAS,
@@ -127,7 +127,7 @@ export const obterDespesa = async (id) => {
 };
 
 export const atualizarDespesa = async (id, dados) => {
-  const response = await apiClient.put(`/expenses/${id}`, dados);
+  const response = await apiClient.put(`/api/expenses/${id}`, dados);
   // Invalida cache desta despesa específica e listas (memória + localStorage)
   const chaveEspecifica = cacheGlobal.gerarChave('despesa', { id });
   cacheGlobal.invalidar(chaveEspecifica);
@@ -140,7 +140,7 @@ export const atualizarDespesa = async (id, dados) => {
 };
 
 export const deletarDespesa = async (id) => {
-  const response = await apiClient.delete(`/expenses/${id}`);
+  const response = await apiClient.delete(`/api/expenses/${id}`);
   // Invalida cache desta despesa específica e listas (memória + localStorage)
   const chaveEspecifica = cacheGlobal.gerarChave('despesa', { id });
   cacheGlobal.invalidar(chaveEspecifica);
@@ -162,7 +162,7 @@ export const obterRelatorio = async (tipo, ano, mes = null) => {
     async () => {
       const params = new URLSearchParams({ type: tipo, year: ano });
       if (mes && tipo === 'monthly') params.append('month', mes);
-      const response = await apiClient.get(`/expenses/report?${params.toString()}`);
+      const response = await apiClient.get(`/api/expenses/report?${params.toString()}`);
       return response.data;
     },
     TTL.RELATORIOS,
@@ -176,13 +176,13 @@ export const exportarDespesas = (mes, ano) => {
   if (ano) params.append('year', ano);
   const token = authService.getToken();
   const authParam = token ? `&token=${encodeURIComponent(token)}` : '';
-  return `${apiClient.defaults.baseURL}/expenses/export?${params.toString()}${authParam}`;
+  return `${apiClient.defaults.baseURL}/api/expenses/export?${params.toString()}${authParam}`;
 };
 
 export const importarDespesas = async (arquivo) => {
   const formData = new FormData();
   formData.append('file', arquivo);
-  const response = await apiClient.post('/expenses/import', formData, {
+  const response = await apiClient.post('/api/expenses/import', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return response.data;
