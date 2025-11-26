@@ -24,6 +24,8 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
       setActiveTab(initialTab);
       setErro(null);
       setSucesso(false);
+      setLoading(false); // CRÍTICO: Reset loading ao abrir modal
+      setProgress(0);
     }
   }, [isOpen, initialTab]);
 
@@ -179,27 +181,35 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
     try {
       setLoading(true);
       setErro(null);
+      setProgress(0);
 
+      console.log('🔐 Iniciando login Google...');
       const { token, usuario } = await authService.login(credentialResponse.credential);
 
-      console.log('Login Google bem-sucedido:', usuario);
+      console.log('✅ Login Google bem-sucedido:', usuario);
       
       setProgress(100);
       
       setTimeout(() => {
         router.push('/expenses');
         onClose();
+        setLoading(false); // Reset loading após redirecionar
       }, 500);
     } catch (err) {
-      console.error('Erro no login Google:', err);
+      console.error('❌ Erro no login Google:', err);
       setErro('Falha ao fazer login com Google. Tente novamente.');
+    } finally {
+      // CRÍTICO: Sempre desativar loading
       setLoading(false);
+      setProgress(0);
     }
   };
 
   const handleGoogleError = () => {
+    console.error('❌ Erro ao autenticar com Google');
     setErro('Falha ao autenticar com Google.');
     setLoading(false);
+    setProgress(0);
   };
 
   return (
