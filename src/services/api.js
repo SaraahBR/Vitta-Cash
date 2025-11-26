@@ -24,8 +24,17 @@ export const authService = {
   },
   logout: () => {
     if (typeof window !== 'undefined') {
-      localStorage.removeItem(TOKEN_KEY);
-      localStorage.removeItem(USER_KEY);
+      console.log('🔒 SEGURANÇA: Limpando todos os dados do usuário...');
+      
+      // SEGURANÇA CRÍTICA: Limpar TODO o localStorage (tokens, cache de despesas, etc)
+      localStorage.clear();
+      
+      // Limpar cache em memória
+      if (typeof cacheGlobal !== 'undefined') {
+        cacheGlobal.limparTudo();
+      }
+      
+      console.log('✅ Dados limpos com sucesso. Redirecionando...');
       window.location.href = '/';
     }
   },
@@ -83,7 +92,10 @@ apiClient.interceptors.response.use(
 );
 
 export const listarDespesas = async (filtros = {}) => {
-  const chaveCache = cacheGlobal.gerarChave('despesas', filtros);
+  // SEGURANÇA: Incluir ID do usuário na chave do cache
+  const usuario = authService.getUser();
+  const userId = usuario?.id || 'anonymous';
+  const chaveCache = cacheGlobal.gerarChave(`despesas:${userId}`, filtros);
   
   return buscarComCacheHibrido(
     chaveCache,
@@ -104,16 +116,23 @@ export const listarDespesas = async (filtros = {}) => {
 
 export const criarDespesa = async (dados) => {
   const response = await apiClient.post('/api/expenses', dados);
-  // Invalida cache de despesas e relatórios após criar (memória + localStorage)
-  cacheGlobal.invalidarPorPrefixo('despesas');
-  cacheGlobal.invalidarPorPrefixo('relatorio');
-  localCache.removerPorPrefixo('despesas');
-  localCache.removerPorPrefixo('relatorio');
+  // SEGURANÇA: Invalida cache apenas do usuário atual
+  const usuario = authService.getUser();
+  const userId = usuario?.id || 'anonymous';
+  cacheGlobal.invalidarPorPrefixo(`despesas:${userId}`);
+  cacheGlobal.invalidarPorPrefixo(`despesa:${userId}`);
+  cacheGlobal.invalidarPorPrefixo(`relatorio:${userId}`);
+  localCache.removerPorPrefixo(`despesas:${userId}`);
+  localCache.removerPorPrefixo(`despesa:${userId}`);
+  localCache.removerPorPrefixo(`relatorio:${userId}`);
   return response.data;
 };
 
 export const obterDespesa = async (id) => {
-  const chaveCache = cacheGlobal.gerarChave('despesa', { id });
+  // SEGURANÇA: Incluir ID do usuário na chave do cache
+  const usuario = authService.getUser();
+  const userId = usuario?.id || 'anonymous';
+  const chaveCache = cacheGlobal.gerarChave(`despesa:${userId}`, { id });
   
   return buscarComCacheHibrido(
     chaveCache,
@@ -128,34 +147,41 @@ export const obterDespesa = async (id) => {
 
 export const atualizarDespesa = async (id, dados) => {
   const response = await apiClient.put(`/api/expenses/${id}`, dados);
-  // Invalida cache desta despesa específica e listas (memória + localStorage)
-  const chaveEspecifica = cacheGlobal.gerarChave('despesa', { id });
+  // SEGURANÇA: Invalida cache apenas do usuário atual
+  const usuario = authService.getUser();
+  const userId = usuario?.id || 'anonymous';
+  const chaveEspecifica = cacheGlobal.gerarChave(`despesa:${userId}`, { id });
   cacheGlobal.invalidar(chaveEspecifica);
   localCache.remover(chaveEspecifica);
-  cacheGlobal.invalidarPorPrefixo('despesas');
-  cacheGlobal.invalidarPorPrefixo('relatorio');
-  localCache.removerPorPrefixo('despesas');
-  localCache.removerPorPrefixo('relatorio');
+  cacheGlobal.invalidarPorPrefixo(`despesas:${userId}`);
+  cacheGlobal.invalidarPorPrefixo(`relatorio:${userId}`);
+  localCache.removerPorPrefixo(`despesas:${userId}`);
+  localCache.removerPorPrefixo(`relatorio:${userId}`);
   return response.data;
 };
 
 export const deletarDespesa = async (id) => {
   const response = await apiClient.delete(`/api/expenses/${id}`);
-  // Invalida cache desta despesa específica e listas (memória + localStorage)
-  const chaveEspecifica = cacheGlobal.gerarChave('despesa', { id });
+  // SEGURANÇA: Invalida cache apenas do usuário atual
+  const usuario = authService.getUser();
+  const userId = usuario?.id || 'anonymous';
+  const chaveEspecifica = cacheGlobal.gerarChave(`despesa:${userId}`, { id });
   cacheGlobal.invalidar(chaveEspecifica);
   localCache.remover(chaveEspecifica);
-  cacheGlobal.invalidarPorPrefixo('despesas');
-  cacheGlobal.invalidarPorPrefixo('relatorio');
-  localCache.removerPorPrefixo('despesas');
-  localCache.removerPorPrefixo('relatorio');
+  cacheGlobal.invalidarPorPrefixo(`despesas:${userId}`);
+  cacheGlobal.invalidarPorPrefixo(`relatorio:${userId}`);
+  localCache.removerPorPrefixo(`despesas:${userId}`);
+  localCache.removerPorPrefixo(`relatorio:${userId}`);
   return response.data;
 };
 
 export const excluirDespesa = deletarDespesa;
 
 export const obterRelatorio = async (tipo, ano, mes = null) => {
-  const chaveCache = cacheGlobal.gerarChave('relatorio', { tipo, ano, mes });
+  // SEGURANÇA: Incluir ID do usuário na chave do cache
+  const usuario = authService.getUser();
+  const userId = usuario?.id || 'anonymous';
+  const chaveCache = cacheGlobal.gerarChave(`relatorio:${userId}`, { tipo, ano, mes });
   
   return buscarComCacheHibrido(
     chaveCache,
