@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { authService } from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import './profileButton.css';
 
 export default function ProfileButton() {
+  const router = useRouter();
   const [usuario, setUsuario] = useState(null);
   const [autenticado, setAutenticado] = useState(false);
   const [dropdownAberto, setDropdownAberto] = useState(false);
@@ -39,8 +41,23 @@ export default function ProfileButton() {
   };
 
   const handleLogout = () => {
-    authService.logout();
+    console.log('🚪 Iniciando logout...');
     setDropdownAberto(false);
+    
+    // Limpar dados do usuário
+    if (typeof window !== 'undefined') {
+      console.log('🔒 SEGURANÇA: Limpando todos os dados do usuário...');
+      localStorage.clear();
+    }
+    
+    // Atualizar estado
+    setAutenticado(false);
+    setUsuario(null);
+    
+    // Redirecionar para home
+    console.log('✅ Redirecionando para home...');
+    router.push('/');
+    router.refresh();
   };
 
   const handleAbrirModal = () => {

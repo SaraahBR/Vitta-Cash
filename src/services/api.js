@@ -34,8 +34,10 @@ export const authService = {
         cacheGlobal.limparTudo();
       }
       
-      console.log('✅ Dados limpos com sucesso. Redirecionando...');
-      window.location.href = '/';
+      console.log('✅ Dados limpos com sucesso');
+      
+      // Forçar reload completo da página para limpar estado do React
+      window.location.replace('/');
     }
   },
   getToken: () => typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEY) : null,
