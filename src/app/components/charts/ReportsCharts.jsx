@@ -25,6 +25,7 @@ export function PieChartCategories({ data }) {
             outerRadius={outerRadius}
             fill="#8884d8"
             dataKey="total"
+            nameKey="categoria"
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${entry.categoria}-${index}`} fill={COLORS[index % COLORS.length]} />

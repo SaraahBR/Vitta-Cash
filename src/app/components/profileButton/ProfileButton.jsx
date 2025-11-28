@@ -48,16 +48,11 @@ export default function ProfileButton() {
     if (globalThis.window !== undefined) {
       console.log('🔒 SEGURANÇA: Limpando todos os dados do usuário...');
       localStorage.clear();
+      
+      // Redirecionar para home e recarregar a página
+      console.log('✅ Redirecionando para home...');
+      globalThis.window.location.href = '/';
     }
-    
-    // Atualizar estado
-    setAutenticado(false);
-    setUsuario(null);
-    
-    // Redirecionar para home
-    console.log('✅ Redirecionando para home...');
-    router.push('/');
-    router.refresh();
   };
 
   const handleAbrirModal = () => {
