@@ -43,8 +43,7 @@
 ### 📈 Relatórios e Análises
 - ✅ Relatórios mensais detalhados
 - ✅ Relatórios anuais consolidados
-- ✅ Exportação de dados em CSV
-- ✅ Importação de despesas via CSV
+- ✅ Envio de relatórios por email com gráficos
 - ✅ Análise de gastos por categoria
 - ✅ Análise de evolução temporal
 
@@ -85,7 +84,6 @@
 ### Desenvolvimento e Testes
 - **ESLint 9** + **Prettier** para código limpo
 - **Jest 29.7.0** + **React Testing Library 16** para testes
-- **Formidable 3.5.2** para upload de arquivos CSV
 - **jsconfig.json** para intellisense e imports absolutos
 
 ---
@@ -104,10 +102,6 @@ vittacash/
 │   │   │   │   ├── route.js                    # GET (listar) e POST (criar)
 │   │   │   │   ├── [id]/
 │   │   │   │   │   └── route.js                # GET, PUT, DELETE (individual)
-│   │   │   │   ├── export/
-│   │   │   │   │   └── route.js                # Exportar CSV
-│   │   │   │   ├── import/
-│   │   │   │   │   └── route.js                # Importar CSV (multipart)
 │   │   │   │   └── report/
 │   │   │   │       └── route.js                # Relatórios mensais/anuais
 │   │   │   └── health/
@@ -274,13 +268,6 @@ vittacash/
   - Retorna: total mensal, média diária, gastos por categoria, por dia
 - `GET /api/expenses/report?type=yearly&year=2025` - Relatório anual
   - Retorna: total anual, média mensal, gastos por categoria, por mês
-
-### 📥📤 Import/Export
-- `GET /api/expenses/export?month=11&year=2025` - Exportar despesas em CSV
-  - Formato: Data, Título, Valor, Categoria, Recorrente, Tipo, Notas
-- `POST /api/expenses/import` - Importar despesas via CSV
-  - Content-Type: `multipart/form-data`
-  - Campo: `file` (arquivo CSV)
 
 ### 🏥 Utilidades
 - `GET /api/health` - Health check da aplicação
@@ -724,10 +711,10 @@ DATABASE_URL="sua-url-producao" npm run prisma:migrate
   - Total de gastos
   - Média de gastos
   - Maior e menor despesa
-- **Exportação CSV**:
-  - Download de relatórios
-  - Formato compatível com Excel
-  - Importação de volta para o sistema
+- **Envio por Email**:
+  - Relatórios detalhados por email
+  - Gráficos de pizza e colunas em SVG
+  - Estatísticas e insights automáticos
 
 ### Autenticação
 - **Login com Google**: Um clique para entrar

@@ -198,22 +198,4 @@ export const obterRelatorio = async (tipo, ano, mes = null) => {
   );
 };
 
-export const exportarDespesas = (mes, ano) => {
-  const params = new URLSearchParams();
-  if (mes) params.append('month', mes);
-  if (ano) params.append('year', ano);
-  const token = authService.getToken();
-  const authParam = token ? `&token=${encodeURIComponent(token)}` : '';
-  return `${apiClient.defaults.baseURL}/api/expenses/export?${params.toString()}${authParam}`;
-};
-
-export const importarDespesas = async (arquivo) => {
-  const formData = new FormData();
-  formData.append('file', arquivo);
-  const response = await apiClient.post('/api/expenses/import', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-  return response.data;
-};
-
 export default apiClient;

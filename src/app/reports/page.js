@@ -40,48 +40,6 @@ export default function ReportsPage() {
     }
   };
 
-  const exportarCSV = () => {
-    if (!relatorio) return;
-
-    let csvContent = '';
-    
-    if (tipo === 'yearly') {
-      csvContent = 'Relatório Anual,' + ano + '\n\n';
-      csvContent += 'Total Gasto no Ano,R$ ' + relatorio.totalGeral.toFixed(2) + '\n';
-      
-      if (relatorio.meses && relatorio.meses.length > 0) {
-        const totalAnual = relatorio.totalGeral;
-        const mediaAnual = totalAnual / 12;
-        csvContent += 'Média Mensal,R$ ' + mediaAnual.toFixed(2) + '\n\n';
-        
-        csvContent += 'Mês,Valor\n';
-        relatorio.meses.forEach((m) => {
-          csvContent += `${m.mes},R$ ${m.total.toFixed(2)}\n`;
-        });
-      }
-    } else {
-      csvContent = 'Relatório Mensal,' + mes + '/' + ano + '\n\n';
-      csvContent += 'Total Gasto,R$ ' + relatorio.totalGeral.toFixed(2) + '\n\n';
-      
-      if (relatorio.categorias) {
-        csvContent += 'Categoria,Valor\n';
-        relatorio.categorias.forEach((cat) => {
-          csvContent += `${cat.categoria},R$ ${cat.total.toFixed(2)}\n`;
-        });
-      }
-    }
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `relatorio_${tipo}_${ano}${tipo === 'monthly' ? '_' + mes : ''}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   const calcularEstatisticasAnuais = () => {
     if (!relatorio || tipo !== 'yearly') return null;
     
@@ -153,16 +111,11 @@ export default function ReportsPage() {
               Gerar Relatório
             </button>
             {relatorio && (
-              <>
-                <button onClick={exportarCSV} className="reports-btn reports-btn-export">
-                  📊 Exportar CSV
-                </button>
-                <SendReportButton 
-                  type={tipo} 
-                  year={ano} 
-                  month={tipo === 'monthly' ? mes : null} 
-                />
-              </>
+              <SendReportButton 
+                type={tipo} 
+                year={ano} 
+                month={tipo === 'monthly' ? mes : null} 
+              />
             )}
           </div>
         </div>
