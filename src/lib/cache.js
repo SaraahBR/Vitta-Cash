@@ -59,15 +59,15 @@ class CacheManager {
    */
   invalidarPorPrefixo(prefixo) {
     const chaves = Array.from(this.cache.keys());
-    chaves.forEach(chave => {
+    for (const chave of chaves) {
       if (chave.startsWith(prefixo)) {
         this.cache.delete(chave);
       }
-    });
+    }
   }
 
   /**
-   * Limpa todo o cache
+   * Limpa todo o cache em memória
    */
   limpar() {
     this.cache.clear();
@@ -80,12 +80,12 @@ class CacheManager {
     const agora = Date.now();
     const chaves = Array.from(this.cache.keys());
     
-    chaves.forEach(chave => {
+    for (const chave of chaves) {
       const item = this.cache.get(chave);
       if (item && agora > item.expiraEm) {
         this.cache.delete(chave);
       }
-    });
+    }
   }
 
   /**
@@ -112,7 +112,7 @@ class CacheManager {
 const cacheGlobal = new CacheManager();
 
 // Limpa itens expirados a cada 2 minutos
-if (typeof window !== 'undefined') {
+if (globalThis.window !== undefined) {
   setInterval(() => {
     cacheGlobal.limparExpirados();
   }, 2 * 60 * 1000);

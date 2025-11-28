@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { validarDespesa } from '@/lib/validacoes';
+import PropTypes from 'prop-types';
 import { formatarValorInput, desformatarValor } from '@/lib/formatadores';
 import LoadingScreen from '../loading/LoadingScreen';
 import './expenseForm.css';
@@ -273,3 +273,25 @@ export default function ExpenseForm({ despesaInicial, aoSalvar, aoCancelar }) {
     </>
   );
 }
+
+ExpenseForm.propTypes = {
+  despesaInicial: PropTypes.shape({
+    descricao: PropTypes.string,
+    titulo: PropTypes.string,
+    title: PropTypes.string,
+    valor: PropTypes.number,
+    amount: PropTypes.number,
+    data: PropTypes.string,
+    date: PropTypes.string,
+    categoria: PropTypes.string,
+    category: PropTypes.string,
+    recorrente: PropTypes.bool,
+    recurring: PropTypes.bool,
+    tipoRecorrencia: PropTypes.string,
+    recurrenceType: PropTypes.string,
+    notas: PropTypes.string,
+    notes: PropTypes.string,
+  }),
+  aoSalvar: PropTypes.func,
+  aoCancelar: PropTypes.func,
+};

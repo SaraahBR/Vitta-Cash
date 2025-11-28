@@ -15,7 +15,7 @@ export async function GET(request) {
   // Verificar autenticação
   const sessao = await getServerSession(authOptions);
   
-  if (!sessao || !sessao.user) {
+  if (!sessao?.user) {
     return NextResponse.json({ erro: 'Não autenticado' }, { status: 401 });
   }
 
@@ -34,8 +34,8 @@ export async function GET(request) {
 
     // Filtro por mês e ano
     if (month && year) {
-      const mesNum = parseInt(month, 10);
-      const anoNum = parseInt(year, 10);
+      const mesNum = Number.parseInt(month, 10);
+      const anoNum = Number.parseInt(year, 10);
       
       if (mesNum >= 1 && mesNum <= 12 && anoNum > 1900) {
         const dataInicio = new Date(anoNum, mesNum - 1, 1);
@@ -71,8 +71,8 @@ export async function GET(request) {
     });
 
     return NextResponse.json(despesas);
-  } catch (erro) {
-    console.error('Erro ao listar despesas:', erro);
+  } catch (error_) {
+    console.error('Erro ao listar despesas:', error_);
     return NextResponse.json({ erro: 'Erro ao buscar despesas' }, { status: 500 });
   }
 }
@@ -86,7 +86,7 @@ export async function POST(request) {
   // Verificar autenticação
   const sessao = await getServerSession(authOptions);
   
-  if (!sessao || !sessao.user) {
+  if (!sessao?.user) {
     return NextResponse.json({ erro: 'Não autenticado' }, { status: 401 });
   }
 
@@ -130,8 +130,8 @@ export async function POST(request) {
     });
 
     return NextResponse.json(novaDespesa, { status: 201 });
-  } catch (erro) {
-    console.error('Erro ao criar despesa:', erro);
+  } catch (error_) {
+    console.error('Erro ao criar despesa:', error_);
     return NextResponse.json({ erro: 'Erro ao criar despesa' }, { status: 500 });
   }
 }

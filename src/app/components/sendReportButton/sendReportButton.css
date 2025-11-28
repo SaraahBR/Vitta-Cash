@@ -11,7 +11,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 1.5rem;
-  background: linear-gradient(135deg, #6BCB77, #4D96FF);
+  background: linear-gradient(135deg, #16a34a, #2563eb);
   color: white;
   border: none;
   border-radius: 12px;
@@ -87,13 +87,13 @@
 
 .send-report-message.success {
   background: #f0fdf4;
-  color: #16a34a;
+  color: #15803d;
   border: 1px solid #bbf7d0;
 }
 
 .send-report-message.error {
   background: #fef2f2;
-  color: #dc2626;
+  color: #991b1b;
   border: 1px solid #fecaca;
 }
 

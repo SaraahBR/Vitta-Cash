@@ -19,20 +19,20 @@ export function validarDespesa(dados) {
   if (dados.valor === undefined || dados.valor === null) {
     erros.push('Valor é obrigatório');
   } else {
-    const valorNumerico = parseFloat(dados.valor);
-    if (isNaN(valorNumerico) || valorNumerico <= 0) {
+    const valorNumerico = Number.parseFloat(dados.valor);
+    if (Number.isNaN(valorNumerico) || valorNumerico <= 0) {
       erros.push('Valor deve ser um número positivo');
     }
   }
 
   // Validar data
-  if (!dados.data) {
-    erros.push('Data é obrigatória');
-  } else {
+  if (dados.data) {
     const dataObj = new Date(dados.data);
-    if (isNaN(dataObj.getTime())) {
+    if (Number.isNaN(dataObj.getTime())) {
       erros.push('Data inválida');
     }
+  } else {
+    erros.push('Data é obrigatória');
   }
 
   // Validar categoria
@@ -72,7 +72,7 @@ export function validarDespesa(dados) {
 export function sanitizarDadosDespesa(dados) {
   return {
     descricao: dados.descricao?.trim(),
-    valor: parseFloat(dados.valor),
+    valor: Number.parseFloat(dados.valor),
     data: new Date(dados.data),
     categoria: dados.categoria?.trim(),
     recorrente: Boolean(dados.recorrente),

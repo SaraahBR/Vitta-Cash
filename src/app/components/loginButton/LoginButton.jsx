@@ -41,7 +41,7 @@ export default function LoginButton() {
       setError(null);
 
       // credentialResponse.credential é o idToken do Google
-      const { token, usuario } = await authService.login(credentialResponse.credential);
+      const { usuario } = await authService.login(credentialResponse.credential);
 
       console.log('Login bem-sucedido:', usuario);
       
@@ -49,7 +49,7 @@ export default function LoginButton() {
       
       // Aguardar um pouco antes de redirecionar
       setTimeout(() => {
-        window.location.href = '/expenses';
+        globalThis.location.href = '/expenses';
       }, 500);
     } catch (err) {
       console.error('Erro no login:', err);

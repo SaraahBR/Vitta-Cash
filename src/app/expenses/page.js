@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '../components/layout/Layout';
@@ -26,20 +26,20 @@ export default function ExpensesPage() {
       const isAuth = authService.isAuthenticated();
       setAutenticado(isAuth);
       
-      if (!isAuth) {
-        router.push('/');
-      } else {
+      if (isAuth) {
         // Debounce: aguarda 300ms após mudança de filtro antes de buscar
         const timeoutId = setTimeout(() => {
           carregarDespesas();
         }, 300);
         
         return () => clearTimeout(timeoutId);
+      } else {
+        router.push('/');
       }
     };
 
     return verificarAuth();
-  }, [filtros]);
+  }, [filtros, router]);
 
   const carregarDespesas = useCallback(async () => {
     try {
@@ -47,8 +47,8 @@ export default function ExpensesPage() {
       
       const dados = await listarDespesas(filtros);
       setDespesas(dados);
-    } catch (erro) {
-      console.error('Erro ao carregar despesas:', erro);
+    } catch (error_) {
+      console.error('Erro ao carregar despesas:', error_);
       setDespesas([]); // Fallback para array vazio
     } finally {
       setCarregando(false);
@@ -60,8 +60,8 @@ export default function ExpensesPage() {
       try {
         await excluirDespesa(id);
         carregarDespesas();
-      } catch (erro) {
-        console.error('Erro ao excluir despesa:', erro);
+      } catch (error_) {
+        console.error('Erro ao excluir despesa:', error_);
         alert('Erro ao excluir despesa');
       }
     }
@@ -102,8 +102,9 @@ export default function ExpensesPage() {
         <div className="expenses-filtros">
           <div className="expenses-filtros-grid">
             <div className="expenses-filtros-group">
-              <label>Mês</label>
+              <label htmlFor="filtro-mes">Mês</label>
               <select
+                id="filtro-mes"
                 name="mes"
                 value={filtros.mes}
                 onChange={handleFiltroChange}
@@ -118,8 +119,9 @@ export default function ExpensesPage() {
             </div>
 
             <div className="expenses-filtros-group">
-              <label>Ano</label>
+              <label htmlFor="filtro-ano">Ano</label>
               <input
+                id="filtro-ano"
                 type="number"
                 name="ano"
                 value={filtros.ano}
@@ -129,8 +131,9 @@ export default function ExpensesPage() {
             </div>
 
             <div className="expenses-filtros-group">
-              <label>Categoria</label>
+              <label htmlFor="filtro-categoria">Categoria</label>
               <select
+                id="filtro-categoria"
                 name="categoria"
                 value={filtros.categoria}
                 onChange={handleFiltroChange}

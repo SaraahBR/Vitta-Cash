@@ -1,5 +1,6 @@
 'use client';
 
+import PropTypes from 'prop-types';
 import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
 import './layout.css';
@@ -13,3 +14,8 @@ export default function Layout({ children, semFooter = false }) {
     </div>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+  semFooter: PropTypes.bool,
+};

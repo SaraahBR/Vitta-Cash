@@ -13,7 +13,7 @@ export async function GET(request, { params }) {
   // Verificar autenticação
   const sessao = await getServerSession(authOptions);
   
-  if (!sessao || !sessao.user) {
+  if (!sessao?.user) {
     return NextResponse.json({ erro: 'Não autenticado' }, { status: 401 });
   }
 
@@ -33,8 +33,8 @@ export async function GET(request, { params }) {
     }
 
     return NextResponse.json(despesa);
-  } catch (erro) {
-    console.error('Erro ao buscar despesa:', erro);
+  } catch (error_) {
+    console.error('Erro ao buscar despesa:', error_);
     return NextResponse.json({ erro: 'Erro ao buscar despesa' }, { status: 500 });
   }
 }
@@ -46,7 +46,7 @@ export async function PUT(request, { params }) {
   // Verificar autenticação
   const sessao = await getServerSession(authOptions);
   
-  if (!sessao || !sessao.user) {
+  if (!sessao?.user) {
     return NextResponse.json({ erro: 'Não autenticado' }, { status: 401 });
   }
 
@@ -103,8 +103,8 @@ export async function PUT(request, { params }) {
     });
 
     return NextResponse.json(despesaAtualizada);
-  } catch (erro) {
-    console.error('Erro ao atualizar despesa:', erro);
+  } catch (error_) {
+    console.error('Erro ao atualizar despesa:', error_);
     return NextResponse.json({ erro: 'Erro ao atualizar despesa' }, { status: 500 });
   }
 }
@@ -116,7 +116,7 @@ export async function DELETE(request, { params }) {
   // Verificar autenticação
   const sessao = await getServerSession(authOptions);
   
-  if (!sessao || !sessao.user) {
+  if (!sessao?.user) {
     return NextResponse.json({ erro: 'Não autenticado' }, { status: 401 });
   }
 
@@ -141,8 +141,8 @@ export async function DELETE(request, { params }) {
     });
 
     return NextResponse.json({ mensagem: 'Despesa removida com sucesso' });
-  } catch (erro) {
-    console.error('Erro ao deletar despesa:', erro);
+  } catch (error_) {
+    console.error('Erro ao deletar despesa:', error_);
     return NextResponse.json({ erro: 'Erro ao deletar despesa' }, { status: 500 });
   }
 }

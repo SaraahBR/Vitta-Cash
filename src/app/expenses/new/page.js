@@ -26,8 +26,8 @@ export default function NewExpensePage() {
     try {
       await criarDespesa(dados);
       router.push('/expenses');
-    } catch (erro) {
-      throw new Error(erro.response?.data?.mensagem || 'Erro ao criar despesa');
+    } catch (error_) {
+      throw new Error(error_.response?.data?.mensagem || 'Erro ao criar despesa');
     }
   };
 

@@ -9,6 +9,8 @@ import ExpenseForm from '../../components/expenseForm/ExpenseForm';
 import { authService, obterDespesa, atualizarDespesa } from '../../../services/api';
 import './edit.css';
 
+import PropTypes from 'prop-types';
+
 export default function EditExpensePage({ params }) {
   // Desembrulhar a Promise params com React.use()
   const { id } = use(params);
@@ -37,8 +39,8 @@ export default function EditExpensePage({ params }) {
     try {
       const dados = await obterDespesa(id);
       setDespesa(dados);
-    } catch (erro) {
-      console.error('Erro ao carregar despesa:', erro);
+    } catch (error_) {
+      console.error('Erro ao carregar despesa:', error_);
       alert('Erro ao carregar despesa');
       router.push('/expenses');
     } finally {
@@ -50,8 +52,8 @@ export default function EditExpensePage({ params }) {
     try {
       await atualizarDespesa(id, dados);
       router.push('/expenses');
-    } catch (erro) {
-      throw new Error(erro.response?.data?.mensagem || 'Erro ao atualizar despesa');
+    } catch (error_) {
+      throw new Error(error_.response?.data?.mensagem || 'Erro ao atualizar despesa');
     }
   };
 
@@ -79,3 +81,9 @@ export default function EditExpensePage({ params }) {
     </Layout>
   );
 }
+
+EditExpensePage.propTypes = {
+  params: PropTypes.shape({
+    id: PropTypes.string,
+  }).isRequired,
+};

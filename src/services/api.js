@@ -16,33 +16,33 @@ export const authService = {
     
     const response = await apiClient.post('/api/auth/login/google', { tokenGoogle: googleIdToken });
     const { token, usuario } = response.data;
-    if (typeof window !== 'undefined') {
+    if (globalThis.window !== undefined) {
       localStorage.setItem(TOKEN_KEY, token);
       localStorage.setItem(USER_KEY, JSON.stringify(usuario));
     }
     return { token, usuario };
   },
   logout: () => {
-    if (typeof window !== 'undefined') {
+    if (globalThis.window !== undefined) {
       console.log('🔒 SEGURANÇA: Limpando todos os dados do usuário...');
       
-      // SEGURANÇA CRÍTICA: Limpar TODO o localStorage (tokens, cache de despesas, etc)
+      // SEGURANÇA CRÍTICA: Limpar tudo do localStorage
       localStorage.clear();
       
       // Limpar cache em memória
-      if (typeof cacheGlobal !== 'undefined') {
+      if (cacheGlobal !== undefined) {
         cacheGlobal.limparTudo();
       }
       
       console.log('✅ Dados limpos com sucesso');
       
       // Forçar reload completo da página para limpar estado do React
-      window.location.replace('/');
+      globalThis.location.replace('/');
     }
   },
-  getToken: () => typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEY) : null,
+  getToken: () => globalThis.window !== undefined ? localStorage.getItem(TOKEN_KEY) : null,
   getUser: () => {
-    if (typeof window !== 'undefined') {
+    if (globalThis.window !== undefined) {
       const userData = localStorage.getItem(USER_KEY);
       return userData ? JSON.parse(userData) : null;
     }

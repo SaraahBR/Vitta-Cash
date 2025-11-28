@@ -1,12 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import './cadastro.css';
 
 export default function CadastroPage() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     nome: '',
     email: '',

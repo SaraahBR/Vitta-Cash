@@ -6,8 +6,7 @@ import Layout from './components/layout/Layout';
 import Hero from './components/hero/Hero';
 import Header from './components/header/Header';
 import LoadingScreen from './components/loading/LoadingScreen';
-import { authService } from '../services/api';
-import { obterRelatorio } from '../services/api';
+import { authService, obterRelatorio } from '../services/api';
 import './page.css';
 
 const PieChartCategories = dynamic(
@@ -62,8 +61,8 @@ export default function Home() {
         const proximoAno = mesAtual === 12 ? anoAtual + 1 : anoAtual;
         obterRelatorio('monthly', proximoAno, proximoMes).catch(() => {});
       }, 1000);
-    } catch (erro) {
-      console.error('Erro ao carregar relatórios:', erro);
+    } catch (error_) {
+      console.error('Erro ao carregar relatórios:', error_);
     } finally {
       setCarregando(false);
     }
@@ -119,7 +118,7 @@ export default function Home() {
               </section>
 
               {/* Gráfico de Gastos Mensais por Categoria */}
-              {relatorioMensal && relatorioMensal.porCategoria && relatorioMensal.porCategoria.length > 0 && (
+              {relatorioMensal?.porCategoria?.length > 0 && (
                 <section className="page-graficos">
                   <h3>Gastos por Categoria (Este Mês)</h3>
                   <PieChartCategories data={relatorioMensal.porCategoria} />
@@ -127,7 +126,7 @@ export default function Home() {
               )}
 
               {/* Gráfico de Gastos Anuais por Mês */}
-              {relatorioAnual && relatorioAnual.porMes && relatorioAnual.porMes.length > 0 && (
+              {relatorioAnual?.porMes?.length > 0 && (
                 <section className="page-graficos">
                   <h3>Gastos por Mês (Este Ano)</h3>
                   <BarChartMonths data={relatorioAnual.porMes} />
@@ -135,7 +134,7 @@ export default function Home() {
               )}
 
               {/* Detalhamento das Categorias */}
-              {relatorioMensal && relatorioMensal.porCategoria && (
+              {relatorioMensal?.porCategoria && (
                 <section className="page-categorias">
                   <h3>Detalhamento de Categorias (Este Mês)</h3>
                   {relatorioMensal.porCategoria.map((cat) => (

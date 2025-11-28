@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 
 const AuthContext = createContext();
 
@@ -20,21 +21,25 @@ export function AuthProvider({ children }) {
   const abrirLogin = () => abrirModal('login');
   const abrirCadastro = () => abrirModal('cadastro');
 
+  const contextValue = useMemo(() => ({
+    modalAberto,
+    abaAtiva,
+    abrirModal,
+    fecharModal,
+    abrirLogin,
+    abrirCadastro,
+  }), [modalAberto, abaAtiva]);
+
   return (
-    <AuthContext.Provider
-      value={{
-        modalAberto,
-        abaAtiva,
-        abrirModal,
-        fecharModal,
-        abrirLogin,
-        abrirCadastro,
-      }}
-    >
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
 }
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export function useAuth() {
   const context = useContext(AuthContext);

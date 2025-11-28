@@ -63,7 +63,7 @@ describe('ExpenseForm', () => {
       expect(mockAoSalvar).toHaveBeenCalledWith(
         expect.objectContaining({
           descricao: 'Teste Despesa',
-          valor: 100.50,
+          valor: 100.5,
           data: '2025-11-06',
           categoria: 'Alimentação',
         })
@@ -74,7 +74,7 @@ describe('ExpenseForm', () => {
   it('deve preencher campos ao receber despesaInicial (modo edição)', () => {
     const despesaInicial = {
       descricao: 'Despesa Existente',
-      valor: 50.00,
+      valor: 50,
       data: '2025-11-01',
       categoria: 'Saúde',
       recorrente: true,

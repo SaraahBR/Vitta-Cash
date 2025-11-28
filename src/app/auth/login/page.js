@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { GoogleLogin } from '@react-oauth/google';
-import { authService } from '@/services/api';
 import LoadingScreen from '@/app/components/loading/LoadingScreen';
 import './login.css';
 
@@ -53,7 +52,7 @@ export default function LoginPage() {
       }
 
       // Salvar token e usuário
-      if (typeof window !== 'undefined') {
+      if (globalThis.window !== undefined) {
         localStorage.setItem('vittacash_token', data.token);
         localStorage.setItem('vittacash_user', JSON.stringify(data.usuario));
       }
@@ -95,7 +94,7 @@ export default function LoginPage() {
       }
 
       // Salvar token e usuário
-      if (typeof window !== 'undefined') {
+      if (globalThis.window !== undefined) {
         localStorage.setItem('vittacash_token', data.token);
         localStorage.setItem('vittacash_user', JSON.stringify(data.usuario));
       }

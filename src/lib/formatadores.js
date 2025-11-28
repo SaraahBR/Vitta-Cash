@@ -4,7 +4,7 @@
  * @returns {string} Valor formatado (ex: "1.234,56")
  */
 export function formatarValorBRL(valor) {
-  if (valor === null || valor === undefined || isNaN(valor)) {
+  if (valor === null || valor === undefined || Number.isNaN(valor)) {
     return '0,00';
   }
   
@@ -20,7 +20,7 @@ export function formatarValorBRL(valor) {
  * @returns {string} Valor formatado com símbolo (ex: "R$ 1.234,56")
  */
 export function formatarMoeda(valor) {
-  if (valor === null || valor === undefined || isNaN(valor)) {
+  if (valor === null || valor === undefined || Number.isNaN(valor)) {
     return 'R$ 0,00';
   }
   
@@ -40,10 +40,10 @@ export function desformatarValor(valorFormatado) {
   
   // Remove pontos (separador de milhar) e troca vírgula por ponto
   const valorLimpo = valorFormatado
-    .replace(/\./g, '')
+    .replaceAll('.', '')
     .replace(',', '.');
   
-  return parseFloat(valorLimpo) || 0;
+  return Number.parseFloat(valorLimpo) || 0;
 }
 
 /**
@@ -53,13 +53,13 @@ export function desformatarValor(valorFormatado) {
  */
 export function formatarValorInput(valor) {
   // Remove tudo que não é número
-  let numeros = valor.replace(/\D/g, '');
+  const numeros = valor.replaceAll(/\D/g, '');
   
   // Se vazio, retorna vazio
   if (!numeros) return '';
   
   // Converte para número e divide por 100 (para ter os centavos)
-  const valorNumerico = parseFloat(numeros) / 100;
+  const valorNumerico = Number.parseFloat(numeros) / 100;
   
   // Formata com separador de milhar e vírgula
   return formatarValorBRL(valorNumerico);

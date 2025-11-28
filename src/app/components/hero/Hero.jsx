@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import './hero.css';
 
@@ -92,21 +92,22 @@ export default function Hero() {
         <div className="hero-features-secao" id="recursos">
           <h2 className="hero-features-titulo">Recursos Principais</h2>
           
-          <div 
+          <section 
             className="carousel-container"
+            aria-label="Carrossel de recursos"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
             <div className={`carousel-track ${isPaused ? 'paused' : ''}`}>
               {[...features, ...features].map((feature, index) => (
-                <div key={index} className="hero-feature-card">
+                <div key={`feature-${feature.title}-${index}`} className="hero-feature-card">
                   <div className="hero-feature-icon">{feature.icon}</div>
                   <h3 className="hero-feature-titulo">{feature.title}</h3>
                   <p className="hero-feature-descricao">{feature.description}</p>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>

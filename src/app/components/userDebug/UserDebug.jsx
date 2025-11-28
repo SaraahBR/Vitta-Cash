@@ -29,7 +29,7 @@ export default function UserDebug() {
   const limparERelogar = () => {
     if (confirm('Isso vai fazer logout e limpar o localStorage. Continuar?')) {
       localStorage.clear();
-      window.location.href = '/';
+      globalThis.location.href = '/';
     }
   };
 

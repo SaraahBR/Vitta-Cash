@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import PropTypes from 'prop-types';
 import { GoogleLogin } from '@react-oauth/google';
 import { authService } from '@/services/api';
 import './authModal.css';
@@ -111,7 +112,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
         throw new Error(data.error || 'Erro ao fazer login');
       }
 
-      if (typeof window !== 'undefined') {
+      if (globalThis.window !== undefined) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.usuario));
       }
@@ -150,7 +151,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
       let data;
       const contentType = response.headers.get('content-type');
       
-      if (contentType && contentType.includes('application/json')) {
+      if (contentType?.includes('application/json')) {
         data = await response.json();
       } else {
         // Se não for JSON, pega o texto da resposta
@@ -184,7 +185,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
       setProgress(0);
 
       console.log('🔐 Iniciando login Google...');
-      const { token, usuario } = await authService.login(credentialResponse.credential);
+      const { usuario } = await authService.login(credentialResponse.credential);
 
       console.log('✅ Login Google bem-sucedido:', usuario);
       
@@ -215,8 +216,20 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
   return (
     <>
       {/* Overlay com Blur */}
-      <div className="auth-modal-overlay" onClick={onClose}>
-        <div className="auth-modal-content" onClick={(e) => e.stopPropagation()}>
+      <div 
+        className="auth-modal-overlay" 
+        role="presentation"
+        onClick={onClose}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') onClose();
+        }}
+      >
+        <div 
+          className="auth-modal-content" 
+          role="presentation"
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
           {/* Cabeçalho */}
           <div className="auth-modal-header">
             <Image 
@@ -492,3 +505,9 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
     </>
   );
 }
+
+AuthModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  initialTab: PropTypes.oneOf(['login', 'cadastro']),
+};

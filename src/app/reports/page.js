@@ -32,8 +32,8 @@ export default function ReportsPage() {
       setCarregando(true);
       const dados = await obterRelatorio(tipo, ano, tipo === 'monthly' ? mes : null);
       setRelatorio(dados);
-    } catch (erro) {
-      console.error('Erro ao carregar relatório:', erro);
+    } catch (error_) {
+      console.error('Erro ao carregar relatório:', error_);
       alert('Erro ao carregar relatório');
     } finally {
       setCarregando(false);
@@ -67,8 +67,9 @@ export default function ReportsPage() {
         <div className="reports-filtros">
           <div className="reports-filtros-grid">
             <div className="reports-filtros-group">
-              <label>Tipo de Relatório</label>
+              <label htmlFor="filtro-tipo">Tipo de Relatório</label>
               <select
+                id="filtro-tipo"
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value)}
                 className="reports-filtros-select"
@@ -79,21 +80,23 @@ export default function ReportsPage() {
             </div>
 
             <div className="reports-filtros-group">
-              <label>Ano</label>
+              <label htmlFor="filtro-ano">Ano</label>
               <input
+                id="filtro-ano"
                 type="number"
                 value={ano}
-                onChange={(e) => setAno(parseInt(e.target.value))}
+                onChange={(e) => setAno(Number.parseInt(e.target.value, 10))}
                 className="reports-filtros-input"
               />
             </div>
 
             {tipo === 'monthly' && (
               <div className="reports-filtros-group">
-                <label>Mês</label>
+                <label htmlFor="filtro-mes">Mês</label>
                 <select
+                  id="filtro-mes"
                   value={mes}
-                  onChange={(e) => setMes(parseInt(e.target.value))}
+                  onChange={(e) => setMes(Number.parseInt(e.target.value, 10))}
                   className="reports-filtros-select"
                 >
                   {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (

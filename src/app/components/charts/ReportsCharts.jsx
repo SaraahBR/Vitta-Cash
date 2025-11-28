@@ -1,5 +1,6 @@
 'use client';
 
+import PropTypes from 'prop-types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const COLORS = ['#34d399', '#fbbf24', '#60a5fa', '#f87171', '#a78bfa', '#fb923c', '#fb7185', '#4ade80'];
@@ -8,7 +9,7 @@ export function PieChartCategories({ data }) {
   if (!data || data.length === 0) return null;
 
   // Detecta se é mobile
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isMobile = globalThis.window !== undefined && globalThis.window.innerWidth < 768;
   const outerRadius = isMobile ? 80 : 120;
 
   return (
@@ -20,13 +21,13 @@ export function PieChartCategories({ data }) {
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={!isMobile ? (entry) => `${entry.categoria}: R$ ${entry.total.toFixed(2)}` : false}
+            label={isMobile ? false : (entry) => `${entry.categoria}: R$ ${entry.total.toFixed(2)}`}
             outerRadius={outerRadius}
             fill="#8884d8"
             dataKey="total"
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell key={`cell-${entry.categoria}-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
           <Tooltip 
@@ -47,7 +48,7 @@ export function BarChartMonths({ data }) {
   if (!data || data.length === 0) return null;
 
   // Detecta se é mobile
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isMobile = globalThis.window !== undefined && globalThis.window.innerWidth < 768;
 
   return (
     <div style={{ 
@@ -70,23 +71,23 @@ export function BarChartMonths({ data }) {
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis 
             dataKey="mes" 
-            label={!isMobile ? { 
+            label={isMobile ? undefined : { 
               value: 'Mês', 
               position: 'insideBottom', 
               offset: -10,
               style: { fontSize: '14px', fontWeight: 'bold' }
-            } : undefined}
+            }}
             tick={{ fontSize: isMobile ? '9px' : '12px' }}
             interval={isMobile ? 0 : 'preserveStartEnd'}
           />
           <YAxis 
-            label={!isMobile ? { 
+            label={isMobile ? undefined : { 
               value: 'Valor (R$)', 
               angle: -90, 
               position: 'insideLeft',
               offset: 10,
               style: { fontSize: '14px', fontWeight: 'bold' }
-            } : undefined}
+            }}
             tick={{ fontSize: isMobile ? '8px' : '12px' }}
             width={isMobile ? 40 : 80}
           />
@@ -108,3 +109,21 @@ export function BarChartMonths({ data }) {
     </div>
   );
 }
+
+PieChartCategories.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      categoria: PropTypes.string.isRequired,
+      total: PropTypes.number.isRequired,
+    })
+  ),
+};
+
+BarChartMonths.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      mes: PropTypes.string.isRequired,
+      total: PropTypes.number.isRequired,
+    })
+  ),
+};

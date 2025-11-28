@@ -52,21 +52,21 @@
 }
 
 .expenses-btn-primary {
-  background: linear-gradient(135deg, #34d399 0%, #fbbf24 100%);
+  background: linear-gradient(135deg, #16a34a 0%, #f59e0b 100%);
   color: white;
 }
 
 .expenses-btn-primary:hover {
-  background: linear-gradient(135deg, #10b981 0%, #f59e0b 100%);
+  background: linear-gradient(135deg, #15803d 0%, #ea580c 100%);
 }
 
 .expenses-btn-secondary {
-  background-color: #f87171;
+  background-color: #dc2626;
   color: white;
 }
 
 .expenses-btn-secondary:hover {
-  background-color: #ef4444;
+  background-color: #b91c1c;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
 }

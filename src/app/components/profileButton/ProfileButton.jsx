@@ -45,7 +45,7 @@ export default function ProfileButton() {
     setDropdownAberto(false);
     
     // Limpar dados do usuário
-    if (typeof window !== 'undefined') {
+    if (globalThis.window !== undefined) {
       console.log('🔒 SEGURANÇA: Limpando todos os dados do usuário...');
       localStorage.clear();
     }

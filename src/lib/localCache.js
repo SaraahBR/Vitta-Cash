@@ -22,7 +22,7 @@ class LocalStorageCache {
    * Salva no localStorage com timestamp de expiração
    */
   set(chave, dados, ttlMinutos = 10) {
-    if (typeof window === 'undefined') return;
+    if (globalThis.window === undefined) return;
 
     try {
       const item = {
@@ -35,9 +35,9 @@ class LocalStorageCache {
         this.gerarChave(chave),
         JSON.stringify(item)
       );
-    } catch (erro) {
+    } catch (error_) {
       // LocalStorage cheio ou desabilitado
-      console.warn('Erro ao salvar no localStorage:', erro);
+      console.warn('Erro ao salvar no localStorage:', error_);
     }
   }
 
@@ -45,7 +45,7 @@ class LocalStorageCache {
    * Recupera do localStorage se ainda válido
    */
   get(chave) {
-    if (typeof window === 'undefined') return null;
+    if (globalThis.window === undefined) return null;
 
     try {
       const itemString = localStorage.getItem(this.gerarChave(chave));
@@ -60,8 +60,8 @@ class LocalStorageCache {
       }
 
       return item.dados;
-    } catch (erro) {
-      console.warn('Erro ao ler do localStorage:', erro);
+    } catch (error_) {
+      console.warn('Erro ao ler do localStorage:', error_);
       return null;
     }
   }
@@ -70,7 +70,7 @@ class LocalStorageCache {
    * Remove item específico
    */
   remover(chave) {
-    if (typeof window === 'undefined') return;
+    if (globalThis.window === undefined) return;
     localStorage.removeItem(this.gerarChave(chave));
   }
 
@@ -78,56 +78,56 @@ class LocalStorageCache {
    * Remove todos os itens que começam com o prefixo
    */
   removerPorPrefixo(prefixo) {
-    if (typeof window === 'undefined') return;
+    if (globalThis.window === undefined) return;
 
     const chaveCompleta = this.gerarChave(prefixo);
     const chaves = Object.keys(localStorage);
 
-    chaves.forEach(chave => {
+    for (const chave of chaves) {
       if (chave.startsWith(chaveCompleta)) {
         localStorage.removeItem(chave);
       }
-    });
+    }
   }
 
   /**
-   * Limpa todo o cache
+   * Limpa todo o cache do localStorage
    */
   limpar() {
-    if (typeof window === 'undefined') return;
+    if (globalThis.window === undefined) return;
 
     const chaves = Object.keys(localStorage);
-    chaves.forEach(chave => {
+    for (const chave of chaves) {
       if (chave.startsWith(CACHE_PREFIX)) {
         localStorage.removeItem(chave);
       }
-    });
+    }
   }
 
   /**
    * Remove caches de versões antigas
    */
   limparCacheAntigo() {
-    if (typeof window === 'undefined') return;
+    if (globalThis.window === undefined) return;
 
     const chaves = Object.keys(localStorage);
-    chaves.forEach(chave => {
+    for (const chave of chaves) {
       if (chave.startsWith(CACHE_PREFIX) && !chave.includes(CACHE_VERSION)) {
         localStorage.removeItem(chave);
       }
-    });
+    }
   }
 
   /**
    * Remove itens expirados
    */
   limparExpirados() {
-    if (typeof window === 'undefined') return;
+    if (globalThis.window === undefined) return;
 
     const agora = Date.now();
     const chaves = Object.keys(localStorage);
 
-    chaves.forEach(chave => {
+    for (const chave of chaves) {
       if (chave.startsWith(CACHE_PREFIX)) {
         try {
           const itemString = localStorage.getItem(chave);
@@ -137,26 +137,27 @@ class LocalStorageCache {
               localStorage.removeItem(chave);
             }
           }
-        } catch (erro) {
+        } catch (error_) {
           // Item corrompido, remove
+          console.warn('Item de cache corrompido, removendo:', error_);
           localStorage.removeItem(chave);
         }
       }
-    });
+    }
   }
 
   /**
    * Retorna informações sobre o cache
    */
   getEstatisticas() {
-    if (typeof window === 'undefined') return { total: 0, validos: 0, expirados: 0 };
+    if (globalThis.window === undefined) return { total: 0, validos: 0, expirados: 0 };
 
     const chaves = Object.keys(localStorage).filter(k => k.startsWith(CACHE_PREFIX));
     const agora = Date.now();
     let validos = 0;
     let expirados = 0;
 
-    chaves.forEach(chave => {
+    for (const chave of chaves) {
       try {
         const itemString = localStorage.getItem(chave);
         if (itemString) {
@@ -167,10 +168,11 @@ class LocalStorageCache {
             validos++;
           }
         }
-      } catch (erro) {
+      } catch (error_) {
+        console.warn('Erro ao processar estatísticas:', error_);
         expirados++;
       }
-    });
+    }
 
     return {
       total: chaves.length,
@@ -184,7 +186,7 @@ class LocalStorageCache {
 const localCache = new LocalStorageCache();
 
 // Limpa expirados ao iniciar e a cada 5 minutos
-if (typeof window !== 'undefined') {
+if (globalThis.window !== undefined) {
   localCache.limparExpirados();
   setInterval(() => {
     localCache.limparExpirados();

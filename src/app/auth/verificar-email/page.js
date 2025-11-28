@@ -39,7 +39,7 @@ function VerificarEmailContent() {
         }
 
         // Salvar token e usuário
-        if (typeof window !== 'undefined') {
+        if (globalThis.window !== undefined) {
           localStorage.setItem('vittacash_token', data.token);
           localStorage.setItem('vittacash_user', JSON.stringify(data.usuario));
         }

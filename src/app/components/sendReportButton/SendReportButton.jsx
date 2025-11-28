@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import './sendReportButton.css';
 
 export default function SendReportButton({ type = 'monthly', year, month }) {
@@ -14,7 +15,7 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
     setError(null);
 
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('vittacash_token') : null;
+      const token = globalThis.window === undefined ? null : localStorage.getItem('vittacash_token');
 
       // Construir URL com parâmetros
       const params = new URLSearchParams({
@@ -112,3 +113,9 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
     </div>
   );
 }
+
+SendReportButton.propTypes = {
+  type: PropTypes.oneOf(['monthly', 'yearly']),
+  year: PropTypes.number.isRequired,
+  month: PropTypes.number,
+};

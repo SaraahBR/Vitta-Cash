@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import AuthProvider from './components/authProvider/AuthProvider';
 import { AuthProvider as AuthModalProvider } from '@/contexts/AuthContext';
 import AuthModalWrapper from './components/authModalWrapper/AuthModalWrapper';
@@ -25,3 +26,7 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+RootLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
