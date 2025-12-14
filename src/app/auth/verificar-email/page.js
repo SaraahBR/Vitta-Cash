@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import './verificar-email.css';
 
 function VerificarEmailContent() {
@@ -73,7 +74,14 @@ function VerificarEmailContent() {
 
         {status === 'sucesso' && (
           <>
-            <div className="sucesso-icon">✅</div>
+            <div className="sucesso-icon">
+              <Image 
+                src="/LOGO_VittaCash.png" 
+                alt="VittaCash" 
+                width={100} 
+                height={100}
+              />
+            </div>
             <h1>E-mail Verificado!</h1>
             <p className="sucesso-mensagem">{mensagem}</p>
             <p className="redirect-info">

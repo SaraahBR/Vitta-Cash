@@ -1,10 +1,30 @@
+/* Reset do padding do body para esta página */
+body:has(.reenviar-container) {
+  padding-top: 0 !important;
+}
+
 .reenviar-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #d1fae5 0%, #dbeafe 50%, #fef3c7 100%);
   padding: 2rem;
+  animation: gradientShift 10s ease infinite;
+  background-size: 200% 200%;
+  overflow: auto;
+  margin: 0;
+  z-index: 9999;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .reenviar-card {
