@@ -1,12 +1,24 @@
+/* Reset do padding do body para esta página */
+body:has(.verificar-container) {
+  padding-top: 0 !important;
+}
+
 .verificar-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #6BCB77 0%, #4D96FF 50%, #FFD93D 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #d1fae5 0%, #dbeafe 50%, #fef3c7 100%);
   padding: 2rem;
   animation: gradientShift 10s ease infinite;
   background-size: 200% 200%;
+  overflow: auto;
+  margin: 0;
+  z-index: 9999;
 }
 
 @keyframes gradientShift {
@@ -40,7 +52,7 @@
 }
 
 .verificar-card h1 {
-  background: linear-gradient(135deg, #6BCB77 0%, #4D96FF 50%, #FFD93D 100%);
+  background: linear-gradient(135deg, #047857 0%, #1e40af 50%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -63,9 +75,9 @@
   height: 70px;
   margin: 0 auto 2rem;
   border: 5px solid rgba(255, 255, 255, 0.3);
-  border-top: 5px solid #6BCB77;
-  border-right: 5px solid #4D96FF;
-  border-bottom: 5px solid #FFD93D;
+  border-top: 5px solid #047857;
+  border-right: 5px solid #1e40af;
+  border-bottom: 5px solid #d97706;
   border-radius: 50%;
   animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
 }
@@ -80,7 +92,7 @@
   font-size: 6rem;
   margin-bottom: 1.5rem;
   animation: pulse 1.5s ease infinite;
-  filter: drop-shadow(0 5px 15px rgba(107, 203, 119, 0.4));
+  filter: drop-shadow(0 5px 15px rgba(4, 120, 87, 0.4));
 }
 
 @keyframes pulse {
@@ -90,9 +102,9 @@
 
 .sucesso-mensagem {
   font-size: 1.2rem;
-  color: #6BCB77;
+  color: #047857;
   font-weight: 600;
-  text-shadow: 0 2px 4px rgba(107, 203, 119, 0.2);
+  text-shadow: 0 2px 4px rgba(4, 120, 87, 0.2);
 }
 
 .redirect-info {

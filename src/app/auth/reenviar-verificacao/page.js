@@ -132,7 +132,7 @@ export default function ReenviarVerificacaoPage() {
               Fazer login
             </Link>
           </p>
-          <Link href="/auth/cadastro" className="link-cadastro">
+          <Link href="/" className="link-cadastro">
             Criar nova conta
           </Link>
         </div>

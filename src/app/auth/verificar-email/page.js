@@ -94,7 +94,7 @@ function VerificarEmailContent() {
               <Link href="/auth/reenviar-verificacao" className="btn-reenviar">
                 Reenviar E-mail de Verificação
               </Link>
-              <Link href="/auth/cadastro" className="btn-cadastrar-novamente">
+              <Link href="/" className="btn-cadastrar-novamente">
                 Cadastrar Novamente
               </Link>
             </div>

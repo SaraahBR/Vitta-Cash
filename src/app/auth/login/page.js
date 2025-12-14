@@ -190,7 +190,7 @@ export default function LoginPage() {
         <div className="login-footer">
           <p>
             Não tem uma conta?{' '}
-            <Link href="/auth/cadastro" className="link-cadastro">
+            <Link href="/" className="link-cadastro">
               Criar conta
             </Link>
           </p>
