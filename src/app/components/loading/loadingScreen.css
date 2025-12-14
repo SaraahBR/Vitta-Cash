@@ -49,7 +49,7 @@
 
 .loading-content {
   text-align: center;
-  padding: 3rem;
+  padding: 2rem 3rem 3rem 3rem;
   max-width: 400px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
@@ -57,7 +57,7 @@
 }
 
 .loading-logo {
-  margin: 0 auto 2rem auto;
+  margin: -3rem auto 4.5rem auto;
   animation: floatAnimation 3s ease-in-out infinite;
   display: flex;
   justify-content: center;
@@ -156,12 +156,17 @@
   }
   
   .loading-logo {
-    margin-bottom: 1.5rem;
+    margin: -2rem auto 4rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .loading-logo-img {
-    width: 80px !important;
-    height: 80px !important;
+    width: 60px !important;
+    height: 60px !important;
+    display: block !important;
+    margin: 0 auto !important;
   }
   
   @keyframes floatAnimation {
@@ -169,7 +174,7 @@
       transform: translateY(0px);
     }
     50% {
-      transform: translateY(-10px);
+      transform: translateY(-3px);
     }
   }
   
