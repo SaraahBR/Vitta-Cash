@@ -21,6 +21,25 @@ export default function ExpensesPage() {
     categoria: '',
   });
 
+  const carregarDespesas = useCallback(async () => {
+    try {
+      setCarregando(true);
+      
+      const dados = await listarDespesas(filtros);
+      setDespesas(dados);
+    } catch (error_) {
+      const mensagemErro = error_ instanceof Error ? error_.message : 'Erro ao carregar despesas';
+      // Em produção, você pode enviar este erro para um serviço de monitoramento
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error(mensagemErro, error_);
+      }
+      setDespesas([]); // Fallback para array vazio
+    } finally {
+      setCarregando(false);
+    }
+  }, [filtros]);
+
   useEffect(() => {
     const verificarAuth = () => {
       const isAuth = authService.isAuthenticated();
@@ -39,21 +58,7 @@ export default function ExpensesPage() {
     };
 
     return verificarAuth();
-  }, [filtros, router]);
-
-  const carregarDespesas = useCallback(async () => {
-    try {
-      setCarregando(true);
-      
-      const dados = await listarDespesas(filtros);
-      setDespesas(dados);
-    } catch (error_) {
-      console.error('Erro ao carregar despesas:', error_);
-      setDespesas([]); // Fallback para array vazio
-    } finally {
-      setCarregando(false);
-    }
-  }, [filtros]);
+  }, [filtros, router, carregarDespesas]);
 
   const handleExcluir = async (id) => {
     if (confirm('Tem certeza que deseja excluir esta despesa?')) {
@@ -184,7 +189,7 @@ export default function ExpensesPage() {
                 <div className="expenses-card-actions">
                   <Link
                     href={`/expenses/${despesa.id}`}
-                    className="expenses-btn expenses-btn-primary"
+                    className="expenses-btn expenses-btn-edit"
                   >
                     Editar
                   </Link>

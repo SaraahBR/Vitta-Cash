@@ -1,13 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { authService } from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import './profileButton.css';
 
 export default function ProfileButton() {
-  const router = useRouter();
   const [usuario, setUsuario] = useState(null);
   const [autenticado, setAutenticado] = useState(false);
   const [dropdownAberto, setDropdownAberto] = useState(false);
@@ -41,16 +40,13 @@ export default function ProfileButton() {
   };
 
   const handleLogout = () => {
-    console.log('🚪 Iniciando logout...');
     setDropdownAberto(false);
     
     // Limpar dados do usuário
     if (globalThis.window !== undefined) {
-      console.log('🔒 SEGURANÇA: Limpando todos os dados do usuário...');
       localStorage.clear();
       
       // Redirecionar para home e recarregar a página
-      console.log('✅ Redirecionando para home...');
       globalThis.window.location.href = '/';
     }
   };
@@ -91,11 +87,14 @@ export default function ProfileButton() {
     <div className="profile-button-container" ref={dropdownRef}>
       <button className="profile-icon-btn authenticated" onClick={toggleDropdown}>
         {imagemUsuario ? (
-          <img 
+          <Image 
             src={imagemUsuario} 
             alt={nomeUsuario || usuario.email} 
             className="profile-avatar-img"
+            width={40}
+            height={40}
             referrerPolicy="no-referrer"
+            unoptimized
           />
         ) : (
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -109,10 +108,13 @@ export default function ProfileButton() {
           <div className="profile-dropdown-header">
             <div className="profile-dropdown-avatar">
               {imagemUsuario ? (
-                <img 
+                <Image 
                   src={imagemUsuario} 
                   alt={nomeUsuario || usuario.email}
+                  width={48}
+                  height={48}
                   referrerPolicy="no-referrer"
+                  unoptimized
                 />
               ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">

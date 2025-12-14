@@ -192,7 +192,7 @@ export default function ReportsPage() {
         ) : (
           <div className="reports-resultado">
             <p style={{ textAlign: 'center', color: '#6b7280' }}>
-              Selecione os filtros e clique em "Gerar Relatório"
+              Selecione os filtros e clique em &quot;Gerar Relatório&quot;
             </p>
           </div>
         )}

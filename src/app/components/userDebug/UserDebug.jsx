@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { authService } from '@/services/api';
 import './userDebug.css';
 
@@ -15,9 +16,14 @@ export default function UserDebug() {
 
   useEffect(() => {
     if (mostrar) {
-      const user = authService.getUser();
-      setUsuario(user);
-      setRawData(JSON.stringify(user, null, 2));
+      // Usar setTimeout para evitar setState síncrono
+      const timer = setTimeout(() => {
+        const user = authService.getUser();
+        setUsuario(user);
+        setRawData(JSON.stringify(user, null, 2));
+      }, 0);
+      
+      return () => clearTimeout(timer);
     }
   }, [mostrar]);
 
@@ -63,10 +69,13 @@ export default function UserDebug() {
               <h4>📸 Preview da Imagem</h4>
               {(usuario?.image || usuario?.imagem) ? (
                 <div>
-                  <img 
+                  <Image 
                     src={usuario.image || usuario.imagem} 
                     alt="Preview"
+                    width={200}
+                    height={200}
                     className="user-debug-img"
+                    unoptimized
                     onError={(e) => {
                       e.target.style.border = '2px solid red';
                       e.target.alt = '❌ Erro ao carregar imagem';
@@ -87,8 +96,8 @@ export default function UserDebug() {
                 </div>
               ) : (
                 <div className="user-debug-warning">
-                  ⚠️ Campo "image" ou "imagem" não encontrado ou está vazio!
-                  <p>Verifique se o backend está retornando o campo "image" ou "imagem".</p>
+                  ⚠️ Campo &quot;image&quot; ou &quot;imagem&quot; não encontrado ou está vazio!
+                  <p>Verifique se o backend está retornando o campo &quot;image&quot; ou &quot;imagem&quot;.</p>
                 </div>
               )}
             </div>
@@ -97,16 +106,16 @@ export default function UserDebug() {
               <h4>🔍 Checklist</h4>
               <ul className="user-debug-checklist">
                 <li className={usuario?.id ? 'check-ok' : 'check-error'}>
-                  {usuario?.id ? '✅' : '❌'} Campo "id" presente
+                  {usuario?.id ? '✅' : '❌'} Campo &quot;id&quot; presente
                 </li>
                 <li className={usuario?.email ? 'check-ok' : 'check-error'}>
-                  {usuario?.email ? '✅' : '❌'} Campo "email" presente
+                  {usuario?.email ? '✅' : '❌'} Campo &quot;email&quot; presente
                 </li>
                 <li className={(usuario?.name || usuario?.nome) ? 'check-ok' : 'check-error'}>
-                  {(usuario?.name || usuario?.nome) ? '✅' : '❌'} Campo "name" ou "nome" presente
+                  {(usuario?.name || usuario?.nome) ? '✅' : '❌'} Campo &quot;name&quot; ou &quot;nome&quot; presente
                 </li>
                 <li className={(usuario?.image || usuario?.imagem) ? 'check-ok' : 'check-error'}>
-                  {(usuario?.image || usuario?.imagem) ? '✅' : '⚠️'} Campo "image" ou "imagem" presente
+                  {(usuario?.image || usuario?.imagem) ? '✅' : '⚠️'} Campo &quot;image&quot; ou &quot;imagem&quot; presente
                 </li>
                 <li className={(usuario?.image?.startsWith('http') || usuario?.imagem?.startsWith('http')) ? 'check-ok' : 'check-error'}>
                   {(usuario?.image?.startsWith('http') || usuario?.imagem?.startsWith('http')) ? '✅' : '❌'} URL da imagem válida
@@ -122,10 +131,10 @@ export default function UserDebug() {
 
             <div className="user-debug-help">
               <p><strong>💡 Dica:</strong></p>
-              <p>Se o campo "image" não existe ou está vazio:</p>
+              <p>Se o campo &quot;image&quot; não existe ou está vazio:</p>
               <ol>
                 <li>Faça logout e login novamente</li>
-                <li>Verifique se o backend está retornando "image" na resposta do login</li>
+                <li>Verifique se o backend está retornando &quot;image&quot; na resposta do login</li>
                 <li>Verifique se o Google OAuth está configurado corretamente</li>
               </ol>
             </div>

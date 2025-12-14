@@ -27,9 +27,6 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
         params.append('month', month.toString());
       }
 
-      console.log('🔑 Token:', token ? `${token.substring(0, 20)}...` : 'AUSENTE');
-      console.log('📧 URL:', `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/send-report?${params.toString()}`);
-
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/send-report?${params}`,
         {
@@ -41,14 +38,9 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
         }
       );
 
-      console.log('📊 Status:', response.status);
-      console.log('📝 Headers:', Object.fromEntries(response.headers.entries()));
-
       const data = await response.json();
-      console.log('📦 Response:', data);
 
       if (!response.ok) {
-        console.error('❌ Erro:', data);
         throw new Error(data.error || data.message || 'Erro ao enviar relatório');
       }
 
@@ -57,7 +49,6 @@ export default function SendReportButton({ type = 'monthly', year, month }) {
       // Limpar mensagem após 5 segundos
       setTimeout(() => setMessage(null), 5000);
     } catch (err) {
-      console.error('Erro ao enviar relatório:', err);
       setError(err.message || 'Erro ao enviar relatório por email');
       
       // Limpar erro após 5 segundos

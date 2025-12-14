@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import PropTypes from 'prop-types';
 import './loadingScreen.css';
 
 export default function LoadingScreen({ message = 'Carregando...' }) {
@@ -48,3 +49,7 @@ export default function LoadingScreen({ message = 'Carregando...' }) {
     </div>
   );
 }
+
+LoadingScreen.propTypes = {
+  message: PropTypes.string,
+};

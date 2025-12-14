@@ -40,7 +40,7 @@ export const authService = {
       globalThis.location.replace('/');
     }
   },
-  getToken: () => globalThis.window !== undefined ? localStorage.getItem(TOKEN_KEY) : null,
+  getToken: () => (globalThis.window === undefined ? null : localStorage.getItem(TOKEN_KEY)),
   getUser: () => {
     if (globalThis.window !== undefined) {
       const userData = localStorage.getItem(USER_KEY);

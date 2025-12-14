@@ -105,8 +105,8 @@
 
 .btn-continuar {
   display: inline-block;
-  background: linear-gradient(135deg, #16a34a 0%, #2563eb 100%);
-  color: white;
+  background: linear-gradient(135deg, #047857 0%, #1e40af 100%);
+  color: #ffffff;
   padding: 1.1rem 2.5rem;
   border-radius: 12px;
   text-decoration: none;
@@ -115,6 +115,7 @@
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   box-shadow: 0 8px 20px rgba(77, 150, 255, 0.3);
   letter-spacing: 0.3px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .btn-continuar:hover {
@@ -165,26 +166,28 @@
 }
 
 .btn-reenviar {
-  background: linear-gradient(135deg, #16a34a 0%, #2563eb 100%);
-  color: white;
+  background: linear-gradient(135deg, #047857 0%, #1e40af 100%);
+  color: #ffffff;
   box-shadow: 0 8px 20px rgba(77, 150, 255, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .btn-reenviar:hover {
   transform: translateY(-3px) scale(1.01);
   box-shadow: 0 12px 30px rgba(77, 150, 255, 0.4);
-  background: linear-gradient(135deg, #15803d 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #065f46 0%, #1d4ed8 100%);
 }
 
 .btn-cadastrar-novamente {
-  background: rgba(21, 128, 61, 0.12);
-  color: #14532d;
-  border: 2px solid rgba(21, 128, 61, 0.4);
+  background: #f0fdf4;
+  color: #065f46;
+  border: 2px solid #047857;
+  font-weight: 700;
 }
 
 .btn-cadastrar-novamente:hover {
-  background: rgba(21, 128, 61, 0.25);
-  border-color: #14532d;
+  background: #dcfce7;
+  border-color: #065f46;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(21, 128, 61, 0.2);
 }

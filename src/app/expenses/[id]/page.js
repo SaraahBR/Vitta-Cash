@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState, use, useCallback } from 'react';
 import Layout from '../../components/layout/Layout';
 import Header from '../../components/header/Header';
 import LoadingScreen from '../../components/loading/LoadingScreen';
@@ -20,6 +20,19 @@ export default function EditExpensePage({ params }) {
   const [carregando, setCarregando] = useState(true);
   const [autenticado, setAutenticado] = useState(false);
 
+  const carregarDespesa = useCallback(async () => {
+    try {
+      const dados = await obterDespesa(id);
+      setDespesa(dados);
+    } catch (error_) {
+      console.error('Erro ao carregar despesa:', error_);
+      alert('Erro ao carregar despesa');
+      router.push('/expenses');
+    } finally {
+      setCarregando(false);
+    }
+  }, [id, router]);
+
   useEffect(() => {
     const verificarAuth = async () => {
       const isAuth = authService.isAuthenticated();
@@ -33,20 +46,7 @@ export default function EditExpensePage({ params }) {
     };
 
     verificarAuth();
-  }, [id, router]);
-
-  const carregarDespesa = async () => {
-    try {
-      const dados = await obterDespesa(id);
-      setDespesa(dados);
-    } catch (error_) {
-      console.error('Erro ao carregar despesa:', error_);
-      alert('Erro ao carregar despesa');
-      router.push('/expenses');
-    } finally {
-      setCarregando(false);
-    }
-  };
+  }, [id, router, carregarDespesa]);
 
   const handleSalvar = async (dados) => {
     try {

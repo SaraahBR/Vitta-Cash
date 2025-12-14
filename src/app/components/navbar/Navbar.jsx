@@ -14,7 +14,11 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    setAutenticado(authService.isAuthenticated());
+    const timer = setTimeout(() => {
+      setAutenticado(authService.isAuthenticated());
+    }, 0);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   const linkAtivo = (caminho) => {

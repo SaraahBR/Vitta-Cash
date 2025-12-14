@@ -120,7 +120,6 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
       router.push('/expenses');
       onClose();
     } catch (error) {
-      console.error('Erro no login:', error);
       setErro(error.message || 'Erro ao fazer login');
     } finally {
       setLoading(false);
@@ -156,7 +155,6 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
       } else {
         // Se não for JSON, pega o texto da resposta
         const text = await response.text();
-        console.error('Resposta não-JSON do servidor:', text);
         throw new Error(text || 'Erro ao cadastrar');
       }
 
@@ -170,7 +168,6 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
         setSucesso(false);
       }, 3000);
     } catch (error) {
-      console.error('Erro no cadastro:', error);
       setErro(error.message || 'Erro ao cadastrar');
     } finally {
       setLoading(false);
@@ -184,11 +181,8 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
       setErro(null);
       setProgress(0);
 
-      console.log('🔐 Iniciando login Google...');
-      const { usuario } = await authService.login(credentialResponse.credential);
+      await authService.login(credentialResponse.credential);
 
-      console.log('✅ Login Google bem-sucedido:', usuario);
-      
       setProgress(100);
       
       setTimeout(() => {
@@ -197,8 +191,8 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
         setLoading(false); // Reset loading após redirecionar
       }, 500);
     } catch (err) {
-      console.error('❌ Erro no login Google:', err);
-      setErro('Falha ao fazer login com Google. Tente novamente.');
+      const mensagemErro = err instanceof Error ? err.message : 'Falha ao fazer login com Google. Tente novamente.';
+      setErro(mensagemErro);
     } finally {
       // CRÍTICO: Sempre desativar loading
       setLoading(false);
@@ -207,7 +201,6 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
   };
 
   const handleGoogleError = () => {
-    console.error('❌ Erro ao autenticar com Google');
     setErro('Falha ao autenticar com Google.');
     setLoading(false);
     setProgress(0);
@@ -218,17 +211,19 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
       {/* Overlay com Blur */}
       <div 
         className="auth-modal-overlay" 
-        role="presentation"
         onClick={onClose}
         onKeyDown={(e) => {
           if (e.key === 'Escape') onClose();
         }}
+        tabIndex={-1}
+        aria-label="Modal overlay"
       >
         <div 
           className="auth-modal-content" 
-          role="presentation"
           onClick={(e) => e.stopPropagation()}
           onKeyDown={(e) => e.stopPropagation()}
+          role="dialog"
+          aria-modal="true"
         >
           {/* Cabeçalho */}
           <div className="auth-modal-header">

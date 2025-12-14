@@ -138,19 +138,20 @@
   font-weight: 700;
   border-radius: 14px;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   border: none;
   min-width: 220px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, #16a34a, #f59e0b);
-  color: white;
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.25);
+  background: linear-gradient(135deg, #22c55e 0%, #fbbf24 100%);
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .hero-cta-primario:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 35px rgba(52, 211, 153, 0.4);
-  background: linear-gradient(135deg, #15803d, #ea580c);
+  box-shadow: 0 12px 35px rgba(251, 191, 36, 0.4);
+  background: linear-gradient(135deg, #fbbf24 0%, #22c55e 100%);
 }
 
 .hero-cta-secundario {

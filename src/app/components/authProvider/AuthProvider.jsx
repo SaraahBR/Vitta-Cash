@@ -1,12 +1,12 @@
 'use client';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import PropTypes from 'prop-types';
 
 export default function AuthProvider({ children }) {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
   if (!clientId) {
-    console.error('NEXT_PUBLIC_GOOGLE_CLIENT_ID não configurado no .env');
     return children;
   }
 
@@ -16,3 +16,7 @@ export default function AuthProvider({ children }) {
     </GoogleOAuthProvider>
   );
 }
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

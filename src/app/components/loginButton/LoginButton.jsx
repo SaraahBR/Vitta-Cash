@@ -15,8 +15,12 @@ export default function LoginButton() {
 
   // Resolver hydration error: apenas verificar autenticação no cliente
   useEffect(() => {
-    setIsAuthenticated(authService.isAuthenticated());
-    setUser(authService.getUser());
+    const timer = setTimeout(() => {
+      setIsAuthenticated(authService.isAuthenticated());
+      setUser(authService.getUser());
+    }, 0);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   // Progress bar animation
@@ -31,7 +35,9 @@ export default function LoginButton() {
 
       return () => clearInterval(interval);
     } else {
-      setProgress(0);
+      // Usar setTimeout para evitar setState síncrono
+      const timer = setTimeout(() => setProgress(0), 0);
+      return () => clearTimeout(timer);
     }
   }, [loading]);
 
@@ -41,9 +47,7 @@ export default function LoginButton() {
       setError(null);
 
       // credentialResponse.credential é o idToken do Google
-      const { usuario } = await authService.login(credentialResponse.credential);
-
-      console.log('Login bem-sucedido:', usuario);
+      await authService.login(credentialResponse.credential);
       
       setProgress(100);
       
@@ -52,8 +56,8 @@ export default function LoginButton() {
         globalThis.location.href = '/expenses';
       }, 500);
     } catch (err) {
-      console.error('Erro no login:', err);
-      setError('Falha ao fazer login. Tente novamente.');
+      const mensagemErro = err instanceof Error ? err.message : 'Falha ao fazer login. Tente novamente.';
+      setError(mensagemErro);
       setLoading(false);
     }
   };
@@ -72,11 +76,14 @@ export default function LoginButton() {
       <div className="login-button-container">
         <div className="user-info">
           {imagemUsuario && (
-            <img 
+            <Image 
               src={imagemUsuario} 
               alt={nomeUsuario || 'Usuário'} 
               className="user-avatar"
+              width={40}
+              height={40}
               referrerPolicy="no-referrer"
+              unoptimized
             />
           )}
           <span>Olá, {nomeUsuario || 'Usuário'}</span>

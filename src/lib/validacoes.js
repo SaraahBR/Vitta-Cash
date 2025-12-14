@@ -1,4 +1,89 @@
 /**
+ * Valida descrição
+ */
+function validarDescricao(descricao) {
+  if (!descricao || typeof descricao !== 'string' || descricao.trim().length === 0) {
+    return 'Descrição é obrigatória';
+  }
+  if (descricao.length < 3) {
+    return 'Descrição deve ter no mínimo 3 caracteres';
+  }
+  if (descricao.length > 255) {
+    return 'Descrição deve ter no máximo 255 caracteres';
+  }
+  return null;
+}
+
+/**
+ * Valida valor
+ */
+function validarValor(valor) {
+  if (valor === undefined || valor === null) {
+    return 'Valor é obrigatório';
+  }
+  const valorNumerico = Number.parseFloat(valor);
+  if (Number.isNaN(valorNumerico) || valorNumerico <= 0) {
+    return 'Valor deve ser um número positivo';
+  }
+  return null;
+}
+
+/**
+ * Valida data
+ */
+function validarData(data) {
+  if (!data) {
+    return 'Data é obrigatória';
+  }
+  const dataObj = new Date(data);
+  if (Number.isNaN(dataObj.getTime())) {
+    return 'Data inválida';
+  }
+  return null;
+}
+
+/**
+ * Valida categoria
+ */
+function validarCategoria(categoria) {
+  if (!categoria || typeof categoria !== 'string' || categoria.trim().length === 0) {
+    return 'Categoria é obrigatória';
+  }
+  return null;
+}
+
+/**
+ * Valida recorrência
+ */
+function validarRecorrencia(recorrente, tipoRecorrencia) {
+  const erros = [];
+  
+  if (recorrente !== undefined && typeof recorrente !== 'boolean') {
+    erros.push('Campo "recorrente" deve ser booleano');
+  }
+  
+  const tiposValidos = ['NONE', 'MONTHLY', 'YEARLY'];
+  if (tipoRecorrencia && !tiposValidos.includes(tipoRecorrencia)) {
+    erros.push('Tipo de recorrência inválido (deve ser NONE, MONTHLY ou YEARLY)');
+  }
+  
+  return erros;
+}
+
+/**
+ * Valida notas
+ */
+function validarNotas(notas) {
+  if (notas && typeof notas !== 'string') {
+    return 'Notas devem ser texto';
+  }
+  if (notas && notas.length > 1000) {
+    return 'Notas devem ter no máximo 1000 caracteres';
+  }
+  return null;
+}
+
+/**
  * Valida dados de despesa
  * @param {Object} dados - Objeto com dados da despesa
  * @returns {Object} { valido: boolean, erros: string[] }
@@ -7,56 +92,28 @@ export function validarDespesa(dados) {
   const erros = [];
 
   // Validar descrição
-  if (!dados.descricao || typeof dados.descricao !== 'string' || dados.descricao.trim().length === 0) {
-    erros.push('Descrição é obrigatória');
-  } else if (dados.descricao.length < 3) {
-    erros.push('Descrição deve ter no mínimo 3 caracteres');
-  } else if (dados.descricao.length > 255) {
-    erros.push('Descrição deve ter no máximo 255 caracteres');
-  }
+  const erroDescricao = validarDescricao(dados.descricao);
+  if (erroDescricao) erros.push(erroDescricao);
 
   // Validar valor
-  if (dados.valor === undefined || dados.valor === null) {
-    erros.push('Valor é obrigatório');
-  } else {
-    const valorNumerico = Number.parseFloat(dados.valor);
-    if (Number.isNaN(valorNumerico) || valorNumerico <= 0) {
-      erros.push('Valor deve ser um número positivo');
-    }
-  }
+  const erroValor = validarValor(dados.valor);
+  if (erroValor) erros.push(erroValor);
 
   // Validar data
-  if (dados.data) {
-    const dataObj = new Date(dados.data);
-    if (Number.isNaN(dataObj.getTime())) {
-      erros.push('Data inválida');
-    }
-  } else {
-    erros.push('Data é obrigatória');
-  }
+  const erroData = validarData(dados.data);
+  if (erroData) erros.push(erroData);
 
   // Validar categoria
-  if (!dados.categoria || typeof dados.categoria !== 'string' || dados.categoria.trim().length === 0) {
-    erros.push('Categoria é obrigatória');
-  }
+  const erroCategoria = validarCategoria(dados.categoria);
+  if (erroCategoria) erros.push(erroCategoria);
 
   // Validar recorrência
-  if (dados.recorrente !== undefined && typeof dados.recorrente !== 'boolean') {
-    erros.push('Campo "recorrente" deve ser booleano');
-  }
-
-  // Validar tipo de recorrência
-  const tiposValidos = ['NONE', 'MONTHLY', 'YEARLY'];
-  if (dados.tipoRecorrencia && !tiposValidos.includes(dados.tipoRecorrencia)) {
-    erros.push('Tipo de recorrência inválido (deve ser NONE, MONTHLY ou YEARLY)');
-  }
+  const errosRecorrencia = validarRecorrencia(dados.recorrente, dados.tipoRecorrencia);
+  erros.push(...errosRecorrencia);
 
   // Validar notas (opcional)
-  if (dados.notas && typeof dados.notas !== 'string') {
-    erros.push('Notas devem ser texto');
-  } else if (dados.notas && dados.notas.length > 1000) {
-    erros.push('Notas devem ter no máximo 1000 caracteres');
-  }
+  const erroNotas = validarNotas(dados.notas);
+  if (erroNotas) erros.push(erroNotas);
 
   return {
     valido: erros.length === 0,

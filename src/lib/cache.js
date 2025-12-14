@@ -67,7 +67,7 @@ class CacheManager {
   }
 
   /**
-   * Limpa todo o cache em memória
+   * Limpa completamente o cache em memória
    */
   limpar() {
     this.cache.clear();

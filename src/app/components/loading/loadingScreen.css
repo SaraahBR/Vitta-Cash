@@ -57,8 +57,12 @@
 }
 
 .loading-logo {
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem auto;
   animation: floatAnimation 3s ease-in-out infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 @keyframes floatAnimation {
@@ -73,6 +77,8 @@
 .loading-logo-img {
   filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
   animation: pulse 2s ease-in-out infinite;
+  display: block;
+  margin: 0 auto;
 }
 
 @keyframes pulse {
@@ -145,14 +151,39 @@
 
 @media (max-width: 600px) {
   .loading-content {
-    padding: 1rem;
+    padding: 2rem 1.5rem;
+    max-width: 90%;
+  }
+  
+  .loading-logo {
+    margin-bottom: 1.5rem;
+  }
+  
+  .loading-logo-img {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  @keyframes floatAnimation {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
   }
   
   .loading-title {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .loading-bar-container {
+    margin-bottom: 0.75rem;
   }
   
   .loading-percentage {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-top: 0.75rem;
   }
 }

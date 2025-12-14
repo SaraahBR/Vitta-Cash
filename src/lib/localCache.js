@@ -91,7 +91,7 @@ class LocalStorageCache {
   }
 
   /**
-   * Limpa todo o cache do localStorage
+   * Limpa completamente o cache do localStorage
    */
   limpar() {
     if (globalThis.window === undefined) return;

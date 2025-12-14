@@ -45,66 +45,85 @@ export function PieChartCategories({ data }) {
   );
 }
 
+/**
+ * Calcula configurações responsivas para o gráfico de barras
+ */
+function getResponsiveChartConfig() {
+  const isMobile = globalThis.window !== undefined && globalThis.window.innerWidth < 768;
+  
+  return {
+    chartHeight: isMobile ? '350px' : '400px',
+    margins: { 
+      top: isMobile ? 10 : 20, 
+      right: isMobile ? 5 : 30, 
+      left: isMobile ? 5 : 60, 
+      bottom: isMobile ? 60 : 40 
+    },
+    barSize: isMobile ? 20 : 40,
+    fontSize: {
+      tick: isMobile ? '9px' : '12px',
+      yTick: isMobile ? '8px' : '12px',
+      tooltip: isMobile ? '10px' : '14px',
+      legend: isMobile ? '10px' : '14px'
+    },
+    yAxisWidth: isMobile ? 40 : 80,
+    xAxisLabel: isMobile ? undefined : { 
+      value: 'Mês', 
+      position: 'insideBottom', 
+      offset: -10,
+      style: { fontSize: '14px', fontWeight: 'bold' }
+    },
+    yAxisLabel: isMobile ? undefined : { 
+      value: 'Valor (R$)', 
+      angle: -90, 
+      position: 'insideLeft',
+      offset: 10,
+      style: { fontSize: '14px', fontWeight: 'bold' }
+    },
+    interval: isMobile ? 0 : 'preserveStartEnd'
+  };
+}
+
 export function BarChartMonths({ data }) {
   if (!data || data.length === 0) return null;
 
-  // Detecta se é mobile
-  const isMobile = globalThis.window !== undefined && globalThis.window.innerWidth < 768;
+  const config = getResponsiveChartConfig();
 
   return (
     <div style={{ 
       width: '100%', 
-      height: isMobile ? '350px' : '400px', 
+      height: config.chartHeight, 
       background: '#f9fafb', 
-      padding: isMobile ? '0.75rem' : '1.5rem', 
+      padding: config.margins.top > 10 ? '1.5rem' : '0.75rem', 
       borderRadius: '8px' 
     }}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart 
-          data={data}
-          margin={{ 
-            top: isMobile ? 10 : 20, 
-            right: isMobile ? 5 : 30, 
-            left: isMobile ? 5 : 60, 
-            bottom: isMobile ? 60 : 40 
-          }}
-        >
+        <BarChart data={data} margin={config.margins}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis 
             dataKey="mes" 
-            label={isMobile ? undefined : { 
-              value: 'Mês', 
-              position: 'insideBottom', 
-              offset: -10,
-              style: { fontSize: '14px', fontWeight: 'bold' }
-            }}
-            tick={{ fontSize: isMobile ? '9px' : '12px' }}
-            interval={isMobile ? 0 : 'preserveStartEnd'}
+            label={config.xAxisLabel}
+            tick={{ fontSize: config.fontSize.tick }}
+            interval={config.interval}
           />
           <YAxis 
-            label={isMobile ? undefined : { 
-              value: 'Valor (R$)', 
-              angle: -90, 
-              position: 'insideLeft',
-              offset: 10,
-              style: { fontSize: '14px', fontWeight: 'bold' }
-            }}
-            tick={{ fontSize: isMobile ? '8px' : '12px' }}
-            width={isMobile ? 40 : 80}
+            label={config.yAxisLabel}
+            tick={{ fontSize: config.fontSize.yTick }}
+            width={config.yAxisWidth}
           />
           <Tooltip 
             formatter={(value) => `R$ ${value.toFixed(2)}`}
-            contentStyle={{ fontSize: isMobile ? '10px' : '14px' }}
+            contentStyle={{ fontSize: config.fontSize.tooltip }}
           />
           <Legend 
             wrapperStyle={{ 
-              paddingTop: isMobile ? '15px' : '40px', 
-              fontSize: isMobile ? '10px' : '14px' 
+              paddingTop: config.margins.top > 10 ? '40px' : '15px', 
+              fontSize: config.fontSize.legend 
             }}
             iconType="square"
             verticalAlign="bottom"
           />
-          <Bar dataKey="total" fill="#34d399" name="Total Gasto" barSize={isMobile ? 20 : 40} />
+          <Bar dataKey="total" fill="#34d399" name="Total Gasto" barSize={config.barSize} />
         </BarChart>
       </ResponsiveContainer>
     </div>
