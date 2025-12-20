@@ -49,7 +49,7 @@
 
 .loading-content {
   text-align: center;
-  padding: 2rem 3rem 3rem 3rem;
+  padding: 1rem 3rem 3rem 3rem;
   max-width: 400px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
@@ -57,7 +57,7 @@
 }
 
 .loading-logo {
-  margin: -3rem auto 4.5rem auto;
+  margin: -6rem auto 10rem auto;
   animation: floatAnimation 3s ease-in-out infinite;
   display: flex;
   justify-content: center;
@@ -70,12 +70,12 @@
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-4px);
   }
 }
 
 .loading-logo-img {
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
   animation: pulse 2s ease-in-out infinite;
   display: block;
   margin: 0 auto;
@@ -94,6 +94,7 @@
   color: #1f2937;
   font-size: 1.5rem;
   font-weight: 600;
+  margin-top: 3rem;
   margin-bottom: 2rem;
   animation: fadeInOut 2s ease-in-out infinite;
 }
@@ -151,12 +152,12 @@
 
 @media (max-width: 600px) {
   .loading-content {
-    padding: 2rem 1.5rem;
+    padding: 1rem 1.5rem 2rem 1.5rem;
     max-width: 90%;
   }
   
   .loading-logo {
-    margin: -2rem auto 4rem auto;
+    margin: -4rem auto 8.5rem auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -174,12 +175,13 @@
       transform: translateY(0px);
     }
     50% {
-      transform: translateY(-3px);
+      transform: translateY(-1px);
     }
   }
   
   .loading-title {
     font-size: 1.125rem;
+    margin-top: 2rem;
     margin-bottom: 1.5rem;
   }
   
