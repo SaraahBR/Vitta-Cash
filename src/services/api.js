@@ -31,7 +31,7 @@ export const authService = {
       
       // Limpar cache em memória
       if (cacheGlobal !== undefined) {
-        cacheGlobal.limparTudo();
+        cacheGlobal.limpar();
       }
       
       console.log('✅ Dados limpos com sucesso');
@@ -88,7 +88,9 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) authService.logout();
+    // Falha no próprio login não deve disparar logout/reload (esconderia a mensagem de erro)
+    const ehRotaAuth = error.config?.url?.startsWith('/api/auth/');
+    if (error.response?.status === 401 && !ehRotaAuth) authService.logout();
     return Promise.reject(error);
   }
 );
